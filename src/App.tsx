@@ -1,10 +1,14 @@
 import React from 'react';
 import './App.css';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-     Hello, samurai! Let's go!
+      <ul>
+        <li>CSS</li>
+        <li>HTML</li>
+        <li>REACT</li>
+      </ul>
     </div>
   );
 }
