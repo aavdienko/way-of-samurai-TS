@@ -1,15 +1,19 @@
 import React from 'react';
+import { PostsType } from '../../../App';
+import { ProfilePropsType } from '../Profile';
 import styles from './MyPosts.module.css';
 import Post from './Post/Post';
 
-const MyPosts = () => {
 
-  let postData = [
-    {id: 1, message:'Hi how are you?', likesCount: 20},
-    {id: 2, message:'It is my first post', likesCount: 30}
-  ]
+const MyPosts = (props: ProfilePropsType) => {
 
-  let postsElements = postData.map( p => <Post message={p.message} likesCount={p.likesCount}/>)
+  // вынесли в index.ts
+  // let postData = [
+  //   {id: 1, message:'Hi how are you?', likesCount: 20},
+  //   {id: 2, message:'It is my first post', likesCount: 30}
+  // ]
+
+  let postsElements = props.posts.map( p => <Post message={p.message} likesCount={p.likesCount}/>)
 
 
   return (

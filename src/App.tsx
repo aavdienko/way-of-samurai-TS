@@ -6,18 +6,40 @@ import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 import Profile from './components/Profile/Profile';
 
-const App = () => {
+export type AppPropsType = {
+  messages: Array<MessagesType>,
+  posts: Array<PostsType>,
+  dialogs: Array<DialogsType>
+}
+
+export type PostsType = {
+  id: number,
+  message: string,
+  likesCount: number
+}
+
+export type MessagesType = {
+  id: number,
+  message: string
+}
+
+export type DialogsType = {
+  name: string,
+  id: number
+}
+
+const App = (props: AppPropsType) => {
   return (
     <BrowserRouter>
       <div className="app-wraper">
         <Header />
         <Navbar />
         <div className="app-wraper-content">
-          <Route path='/profile' render={() => <Profile/>} />
-          <Route path='/dialogs' render={() => <Dialogs/>} />
-          <Route path='/news' render={() => <Profile/>} />
-          <Route path='/music' render={() => <Profile/>} />
-          <Route path='/settings' render={() => <Profile/>} />
+          <Route path='/profile' render={() => <Profile posts={props.posts}/>} />
+          <Route path='/dialogs' render={() => <Dialogs messages={props.messages} dialogs={props.dialogs}/>} />
+          <Route path='/news' render={() => <Profile posts={props.posts}/>} />
+          <Route path='/music' render={() => <Profile posts={props.posts}/>} />
+          <Route path='/settings' render={() => <Profile posts={props.posts}/>} />
         </div>
       </div>
     </BrowserRouter>
