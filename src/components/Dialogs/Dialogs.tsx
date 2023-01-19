@@ -5,7 +5,7 @@ import styles from './Dialogs.module.css';
 
 type DialogItemPropsType = {
   name: string,
-  id: string
+  id: number
 }
 
 export const DialogItem = (props: DialogItemPropsType) => {
@@ -29,13 +29,26 @@ export const Message = (props: MessagePropsType) => {
 }
 
 export const Dialogs = () => {
+
+  let dialogsData = [
+    {id:1, name: 'Alex'},
+    {id:2, name: 'Lera'},
+    {id:3, name: 'Schoko'},
+    {id:4, name: 'Crosby'},
+  ]
+
   return (
     <div className={styles.dialogs}>
       <div className={styles.dialogsItems}>
-        <DialogItem name='Alex' id='1'/>
+        <div>
+          {dialogsData.map((d)=>{
+            return <DialogItem name={d.name} id={d.id}/>
+          })}
+        </div>
+        {/* <DialogItem name='Alex' id='1'/>
         <DialogItem name='Lera' id='2'/>
         <DialogItem name='Schoko' id='3'/>
-        <DialogItem name='Crosby' id='4'/>
+        <DialogItem name='Crosby' id='4'/> */}
       </div>
       <div className={styles.messages}>
         <Message message='Hi'/>
