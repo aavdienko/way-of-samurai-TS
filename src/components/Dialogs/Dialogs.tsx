@@ -23,6 +23,7 @@ type MessagePropsType = {
 }
 
 export const Message = (props: MessagePropsType) => {
+
   return (
     <div className={styles.message}>{props.message}</div>
   )
@@ -37,24 +38,23 @@ export const Dialogs = () => {
     {id:4, name: 'Crosby'},
   ]
 
+  let messageData = [
+    {id:1, message: 'Hi'},
+    {id:2, message: 'How are you?'},
+    {id:3, message: 'I am Crosby!'},
+    {id:4, message: 'Yo!'},
+  ]
+
+  let dialogsElements = dialogsData.map( d => <DialogItem name={d.name} id={d.id}/>)
+  let messageElements = messageData.map (m => <Message message={m.message}/>)
+
   return (
     <div className={styles.dialogs}>
       <div className={styles.dialogsItems}>
-        <div>
-          {dialogsData.map((d)=>{
-            return <DialogItem name={d.name} id={d.id}/>
-          })}
-        </div>
-        {/* <DialogItem name='Alex' id='1'/>
-        <DialogItem name='Lera' id='2'/>
-        <DialogItem name='Schoko' id='3'/>
-        <DialogItem name='Crosby' id='4'/> */}
+        {dialogsElements}
       </div>
       <div className={styles.messages}>
-        <Message message='Hi'/>
-        <Message message='How are you?'/>
-        <Message message='I am Crosby!'/>
-        <Message message='Yo!'/>
+        {messageElements}
       </div>
     </div>
   );
