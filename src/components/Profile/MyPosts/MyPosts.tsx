@@ -1,11 +1,10 @@
 import React from 'react';
-import { PostsType } from '../../../App';
-import { ProfilePropsType } from '../Profile';
+import { ProfilePageType } from '../../../redux/state';
 import styles from './MyPosts.module.css';
 import Post from './Post/Post';
 
 
-const MyPosts = (props: ProfilePropsType) => {
+const MyPosts = (props: ProfilePageType) => {
 
   // вынесли в index.ts
   // let postData = [
