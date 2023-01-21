@@ -12,7 +12,7 @@ const MyPosts = (props: ProfilePageType) => {
   //   {id: 2, message:'It is my first post', likesCount: 30}
   // ]
 
-  let postsElements = props.posts.map( p => <Post message={p.message} likesCount={p.likesCount}/>)
+  let postsElements = props.posts.map( p => <Post key={p.id} message={p.message} likesCount={p.likesCount}/>)
 
 
   return (
