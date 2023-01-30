@@ -15,15 +15,22 @@ const MyPosts = (props: ProfilePageType) => {
   let postsElements = props.posts.map( p => <Post key={p.id} message={p.message} likesCount={p.likesCount}/>)
 
 
+  const newPostElement = React.createRef<HTMLTextAreaElement>();
+
+  const addPost = () => {
+    let text = newPostElement.current?.value
+    alert(text)
+  }
+
   return (
     <div className={styles.postsBlock}>
       <h2>My Posts</h2>
       <div>
-        <textarea></textarea>
+        <textarea ref={newPostElement}></textarea>
       </div>
 
       <div>
-        <button>Add Post</button>
+        <button onClick={addPost}>Add Post</button>
       </div>
 
       <div className={styles.posts}>

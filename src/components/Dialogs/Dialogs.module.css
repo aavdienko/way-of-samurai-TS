@@ -1,6 +1,7 @@
 .dialogs {
   display: grid;
   grid-template-columns: 2fr 10fr;
+  width: 200px;
 }
 
 .dialogsItems {
@@ -22,3 +23,9 @@
 /* .message {
 
 } */
+
+.button {
+  height: 20px;
+  width: 50px;
+  border-radius: 10px;
+}
