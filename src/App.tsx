@@ -8,10 +8,8 @@ import Profile from './components/Profile/Profile';
 import { addPost, StateType } from './redux/state';
 
 export type AppPropsType = {
-  state: StateType
-}
-
-
+  state: StateType;
+};
 
 const App = (props: AppPropsType) => {
   return (
@@ -20,8 +18,16 @@ const App = (props: AppPropsType) => {
         <Header />
         <Navbar />
         <div className="app-wraper-content">
-          <Route path='/profile' render={() => <Profile state={props.state.profilePage} addPost={addPost}/>} />
-          <Route path='/dialogs' render={() => <Dialogs state={props.state.dialogsPage}/>} />
+          <Route
+            path="/profile"
+            render={() => (
+              <Profile state={props.state.profilePage} addPost={addPost} />
+            )}
+          />
+          <Route
+            path="/dialogs"
+            render={() => <Dialogs state={props.state.dialogsPage} />}
+          />
           {/* <Route path='/news' render={() => <Profile posts={props.posts}/>} />
           <Route path='/music' render={() => <Profile posts={props.posts}/>} />
           <Route path='/settings' render={() => <Profile posts={props.posts}/>} /> */}
