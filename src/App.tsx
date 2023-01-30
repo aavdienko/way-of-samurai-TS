@@ -5,7 +5,7 @@ import { Dialogs } from './components/Dialogs/Dialogs';
 import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 import Profile from './components/Profile/Profile';
-import { StateType } from './redux/state';
+import { addPost, StateType } from './redux/state';
 
 export type AppPropsType = {
   state: StateType
@@ -20,7 +20,7 @@ const App = (props: AppPropsType) => {
         <Header />
         <Navbar />
         <div className="app-wraper-content">
-          <Route path='/profile' render={() => <Profile state={props.state.profilePage}/>} />
+          <Route path='/profile' render={() => <Profile state={props.state.profilePage} addPost={addPost}/>} />
           <Route path='/dialogs' render={() => <Dialogs state={props.state.dialogsPage}/>} />
           {/* <Route path='/news' render={() => <Profile posts={props.posts}/>} />
           <Route path='/music' render={() => <Profile posts={props.posts}/>} />

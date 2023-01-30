@@ -4,7 +4,13 @@ import styles from './MyPosts.module.css';
 import Post from './Post/Post';
 
 
-const MyPosts = (props: ProfilePageType) => {
+interface MyPostsPropsType extends ProfilePageType {
+  addPost: (postText: string)=> void
+}
+
+
+
+const MyPosts = (props: MyPostsPropsType) => {
 
   // вынесли в index.ts
   // let postData = [
@@ -15,18 +21,23 @@ const MyPosts = (props: ProfilePageType) => {
   let postsElements = props.posts.map( p => <Post key={p.id} message={p.message} likesCount={p.likesCount}/>)
 
 
-  const newPostElement = React.createRef<HTMLTextAreaElement>();
+  const newPostText = React.createRef<HTMLTextAreaElement>();
+
+  // const addPost = () => {
+  //   let text = newPostElement.current?.value
+  //   alert(text)
+  // }
 
   const addPost = () => {
-    let text = newPostElement.current?.value
-    alert(text)
+    let postText = newPostText.current ? newPostText.current?.value : '----'
+    props.addPost(postText)
   }
 
   return (
     <div className={styles.postsBlock}>
       <h2>My Posts</h2>
       <div>
-        <textarea ref={newPostElement}></textarea>
+        <textarea ref={newPostText}></textarea>
       </div>
 
       <div>
