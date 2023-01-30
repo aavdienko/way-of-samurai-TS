@@ -5,7 +5,8 @@ import Post from './Post/Post';
 
 
 interface MyPostsPropsType extends ProfilePageType {
-  addPost: (postText: string)=> void
+  addPost: ()=> void
+  updateNewPostText: (newText: string ) => void;
 }
 
 
@@ -29,15 +30,20 @@ const MyPosts = (props: MyPostsPropsType) => {
   // }
 
   const addPost = () => {
-    let postText = newPostText.current ? newPostText.current?.value : '----'
-    props.addPost(postText)
+    props.addPost()
+  }
+
+  const onPostChange = () => {
+    let newText = newPostText.current ? newPostText.current?.value : '----'
+    props.updateNewPostText(newText)
+    
   }
 
   return (
     <div className={styles.postsBlock}>
       <h2>My Posts</h2>
       <div>
-        <textarea ref={newPostText}></textarea>
+        <textarea onChange={onPostChange} ref={newPostText} value={props.newPostText}></textarea>
       </div>
 
       <div>
