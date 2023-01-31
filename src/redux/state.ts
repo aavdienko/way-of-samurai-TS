@@ -1,4 +1,4 @@
-import { rerenderEntireTree } from './../render';
+
 
 export type StateType = {
   profilePage: ProfilePageType
@@ -29,6 +29,12 @@ export type DialogsType = {
   name: string,
   id: number
 }
+// создали функцию с таким же названием чтобы потом переопределить ее значение на  observer, который является оригинальным rerenderEntireTree переданным из state. Таким образом мы збежали циклической зависимости. 
+let rerenderEntireTree = (state: StateType) =>{
+  console.log('state was changed');
+  
+}
+
 
 export const state: StateType = {
   profilePage: {
@@ -68,4 +74,8 @@ export const addPost = () => {
 export const updateNewPostText = (newText: string) => {
   state.profilePage.newPostText = newText
   rerenderEntireTree(state)
+}
+
+export const subscribe = (observer: (state: StateType) => void) => {
+  rerenderEntireTree = observer
 }
