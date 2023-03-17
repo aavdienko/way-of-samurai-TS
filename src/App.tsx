@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
 import { Dialogs } from './components/Dialogs/Dialogs';
@@ -9,8 +9,7 @@ import { StateType } from './redux/state';
 
 export type AppPropsType = {
   state: StateType;
-  addPost: () => void;
-  updateNewPostText: (newText: string ) => void;
+  dispatch: (action: any) => void
 };
 
 const App = (props: AppPropsType) => {
@@ -23,7 +22,7 @@ const App = (props: AppPropsType) => {
           <Route
             path="/profile"
             render={() => (
-              <Profile state={props.state.profilePage} addPost={props.addPost} updateNewPostText={props.updateNewPostText}/>
+              <Profile state={props.state.profilePage} dispatch={props.dispatch}/>
             )}
           />
           <Route

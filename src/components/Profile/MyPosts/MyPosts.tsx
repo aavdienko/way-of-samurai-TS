@@ -1,12 +1,11 @@
 import React from 'react';
-import { ProfilePageType } from '../../../redux/state';
+import { ProfilePageType, StateType } from '../../../redux/state';
 import styles from './MyPosts.module.css';
 import Post from './Post/Post';
 
 
 interface MyPostsPropsType extends ProfilePageType {
-  addPost: ()=> void
-  updateNewPostText: (newText: string ) => void;
+  dispatch: (action: any) => void
 }
 
 
@@ -29,13 +28,13 @@ const MyPosts = (props: MyPostsPropsType) => {
   //   alert(text)
   // }
 
-  const addPost = () => {
-    props.addPost()
+  const addPostHandler = () => {
+    props.dispatch({type: 'ADD-POST'})
   }
 
-  const onPostChange = () => {
+  const onPostChangeHandler = () => {
     let newText = newPostText.current ? newPostText.current?.value : '----'
-    props.updateNewPostText(newText)
+    props.dispatch({type: 'UPDATE-NEW-POST-TEXT', payload: {newText}})
     
   }
 
@@ -43,11 +42,11 @@ const MyPosts = (props: MyPostsPropsType) => {
     <div className={styles.postsBlock}>
       <h2>My Posts</h2>
       <div>
-        <textarea onChange={onPostChange} ref={newPostText} value={props.newPostText}></textarea>
+        <textarea onChange={onPostChangeHandler} ref={newPostText} value={props.newPostText}></textarea>
       </div>
 
       <div>
-        <button onClick={addPost}>Add Post</button>
+        <button onClick={addPostHandler}>Add Post</button>
       </div>
 
       <div className={styles.posts}>
