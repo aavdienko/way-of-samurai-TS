@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProfilePageType, StateType } from '../../../redux/state';
+import { addPostAC, ProfilePageType, StateType, updateNewPostTextAC } from '../../../redux/state';
 import styles from './MyPosts.module.css';
 import Post from './Post/Post';
 
@@ -29,12 +29,12 @@ const MyPosts = (props: MyPostsPropsType) => {
   // }
 
   const addPostHandler = () => {
-    props.dispatch({type: 'ADD-POST'})
+    props.dispatch(addPostAC())
   }
 
   const onPostChangeHandler = () => {
     let newText = newPostText.current ? newPostText.current?.value : '----'
-    props.dispatch({type: 'UPDATE-NEW-POST-TEXT', payload: {newText}})
+    props.dispatch(updateNewPostTextAC(newText))
     
   }
 

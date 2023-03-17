@@ -5,7 +5,6 @@ export type StoreType = {
   subscribe: (observer: (state: StateType) => void) => void;
   dispatch: (action: any) => void
 };
-
 export type StateType = {
   profilePage: ProfilePageType;
   dialogsPage: DialogsPageType;
@@ -31,6 +30,13 @@ export type DialogsType = {
   name: string;
   id: number;
 };
+export type ActionTypes = addPostACType | updateNewPostTextACType
+
+type addPostACType = ReturnType<typeof addPostAC>
+type updateNewPostTextACType = ReturnType<typeof updateNewPostTextAC>
+
+const ADD_POST = 'ADD-POST'
+const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
 
 export const store: StoreType = {
   _state: {
@@ -65,9 +71,9 @@ export const store: StoreType = {
   subscribe(observer: (state: StateType) => void) {
     this._rerenderEntireTree = observer;
   },
-  dispatch (action: any) {
+  dispatch (action: ActionTypes) {
     switch (action.type) {
-      case 'ADD-POST': {
+      case ADD_POST: {
         let newPost: PostsType = {
           id: 3,
           message: this._state.profilePage.newPostText,
@@ -78,7 +84,7 @@ export const store: StoreType = {
         this._rerenderEntireTree(this._state);
         return this._state
       }
-      case 'UPDATE-NEW-POST-TEXT': {
+      case UPDATE_NEW_POST_TEXT: {
         this._state.profilePage.newPostText = action.payload.newText;
         this._rerenderEntireTree(this._state);
         return this._state
@@ -90,5 +96,24 @@ export const store: StoreType = {
 
 // создали функцию с таким же названием чтобы потом переопределить ее значение на  observer, который является оригинальным rerenderEntireTree переданным из state. Таким образом мы збежали циклической зависимости.
 // let rerenderEntireTree = (state: StateType) =>{
-//   console.log('state was changed');
+//   console.log('state was changed')}
+
+
+export const addPostAC = () => {
+  return {
+    type: ADD_POST
+  } as const 
+}
+export const updateNewPostTextAC = (newText: string) => {
+  return {
+    type: UPDATE_NEW_POST_TEXT, 
+    payload: {newText}
+  } as const 
+}
+
+// export const updateNewPostTextAC = (newText: string) => {
+//   return {
+//     type: UPDATE_NEW_POST_TEXT, 
+//     payload: {newText}
+//   } as const 
 // }
