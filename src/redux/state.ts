@@ -1,9 +1,11 @@
+import {ProfileMainActionType, profileReducer} from './profile-reducer';
+import {DialogsMainActionType, dialogsReducer} from './dialogs-reducer';
 export type StoreType = {
   _state: StateType;
   getState: () => StateType;
   _rerenderEntireTree: (state: StateType) => void;
   subscribe: (observer: (state: StateType) => void) => void;
-  dispatch: (action: any) => void
+  dispatch: (action: any) => void;
 };
 export type StateType = {
   profilePage: ProfilePageType;
@@ -16,7 +18,7 @@ export type ProfilePageType = {
 export type DialogsPageType = {
   dialogs: Array<DialogsType>;
   messages: Array<MessagesType>;
-  newMessageText: string
+  newMessageText: string;
 };
 export type PostsType = {
   id: number;
@@ -31,17 +33,9 @@ export type DialogsType = {
   name: string;
   id: number;
 };
-export type ActionTypes = addPostACType | updateNewPostTextACType | addMessageACType | updateNewMessageTextAC
+export type ActionTypes = ProfileMainActionType | DialogsMainActionType
 
-type addPostACType = ReturnType<typeof addPostAC>
-type updateNewPostTextACType = ReturnType<typeof updateNewPostTextAC>
-type addMessageACType = ReturnType<typeof addMessageAC>
-type updateNewMessageTextAC = ReturnType<typeof updateNewMessageTextAC>
 
-const ADD_POST = 'ADD-POST'
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
-const ADD_MESSAGE = 'ADD-MESSAGE'
-const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT'
 
 export const store: StoreType = {
   _state: {
@@ -65,7 +59,7 @@ export const store: StoreType = {
         { id: 3, message: 'I am Crosby!' },
         { id: 4, message: 'Yo!' },
       ],
-      newMessageText: ''
+      newMessageText: '',
     },
   },
   _rerenderEntireTree(state: StateType) {
@@ -77,73 +71,16 @@ export const store: StoreType = {
   subscribe(observer: (state: StateType) => void) {
     this._rerenderEntireTree = observer;
   },
-  dispatch (action: ActionTypes) {
-    switch (action.type) {
-      case ADD_POST: {
-        let newPost: PostsType = {
-          id: 3,
-          message: this._state.profilePage.newPostText,
-          likesCount: 0,
-        };
-        this._state.profilePage.posts.push(newPost);
-        this._state.profilePage.newPostText = '';
-        this._rerenderEntireTree(this._state);
-        return this._state
-      }
-      case UPDATE_NEW_POST_TEXT: {
-        this._state.profilePage.newPostText = action.payload.newText;
-        this._rerenderEntireTree(this._state);
-        return this._state
-      }
-      case ADD_MESSAGE: {
-        let newMessage: MessagesType = {
-          id: 5,
-          message: this._state.dialogsPage.newMessageText,
-        };        
-        this._state.dialogsPage.messages.push(newMessage);
-        this._state.dialogsPage.newMessageText = '';
-        this._rerenderEntireTree(this._state);
-        return this._state
-      }
-      case UPDATE_NEW_MESSAGE_TEXT: {
+  dispatch(action: ActionTypes) {
+    this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
+    this._state.profilePage = profileReducer(this._state.profilePage, action);
 
-        this._state.dialogsPage.newMessageText = action.payload.newMessageText;
-        this._rerenderEntireTree(this._state);
-        return this._state
-      }
-      default: return this._state
-    }
+
+    this._rerenderEntireTree(this._state);
   },
 };
 
 // создали функцию с таким же названием чтобы потом переопределить ее значение на  observer, который является оригинальным rerenderEntireTree переданным из state. Таким образом мы збежали циклической зависимости.
 // let rerenderEntireTree = (state: StateType) =>{
 //   console.log('state was changed')}
-
-
-export const addPostAC = () => {
-  return {
-    type: ADD_POST
-  } as const 
-}
-
-export const updateNewPostTextAC = (newText: string) => {
-  return {
-    type: UPDATE_NEW_POST_TEXT, 
-    payload: {newText}
-  } as const 
-}
-
-export const addMessageAC = () => {
-  return {
-    type: ADD_MESSAGE 
-  } as const 
-}
-
-export const updateNewMessageTextAC = (newMessageText: string) => {
-  return {
-    type: UPDATE_NEW_MESSAGE_TEXT, 
-    payload: {newMessageText}
-  } as const 
-}
 
