@@ -1,11 +1,11 @@
 import React from 'react';
-import { addPostAC, ProfilePageType, StateType, updateNewPostTextAC } from '../../../redux/state';
+import { ActionTypes, addPostAC, ProfilePageType, StateType, updateNewPostTextAC } from '../../../redux/state';
 import styles from './MyPosts.module.css';
 import Post from './Post/Post';
 
 
 interface MyPostsPropsType extends ProfilePageType {
-  dispatch: (action: any) => void
+  dispatch: (action: ActionTypes) => void
 }
 
 
@@ -33,9 +33,8 @@ const MyPosts = (props: MyPostsPropsType) => {
   }
 
   const onPostChangeHandler = () => {
-    let newText = newPostText.current ? newPostText.current?.value : '----'
+    let newText = newPostText.current ? newPostText.current.value : '----'
     props.dispatch(updateNewPostTextAC(newText))
-    
   }
 
   return (

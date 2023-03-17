@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import styles from './Dialogs.module.css';
 import { Message } from './Message/Message';
 import { DialogItem } from './DialogItem/DialogItem';
-import { DialogsPageType } from '../../redux/state';
+import { ActionTypes, addMessageAC, DialogsPageType, updateNewMessageTextAC } from '../../redux/state';
 
 
 type DialogsPropsType = {
   state: DialogsPageType
+  dispatch: (action: ActionTypes) => void
 }
 
 export const Dialogs = (props: DialogsPropsType) => {
@@ -29,11 +30,16 @@ export const Dialogs = (props: DialogsPropsType) => {
   let dialogsElements = props.state.dialogs.map( d => <DialogItem key={d.id} name={d.name} id={d.id}/>)
   let messageElements = props.state.messages.map( m => <Message key={m.id} message={m.message}/>)
 
-  const newMessageElement = React.createRef<HTMLTextAreaElement>()
+  // const newMessageElement = React.createRef<HTMLTextAreaElement>() - заменили на event 
   
-  const addMessage = () => {
-    let text = newMessageElement.current?.value
-    alert(text)
+  const addMessageHandler = () => {
+    props.dispatch(addMessageAC())
+  }
+
+  const onMessageChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    let newMessageText = e.currentTarget.value
+    // let newMessageText = newMessageElement.current ? newMessageElement.current.value : '----'
+    props.dispatch(updateNewMessageTextAC(newMessageText))
   }
 
   return (
@@ -43,8 +49,8 @@ export const Dialogs = (props: DialogsPropsType) => {
       </div>
       <div className={styles.messages}>
         {messageElements}
-        <textarea ref={newMessageElement}></textarea>        
-        <button className={styles.button} onClick={addMessage}>Send</button>
+        <textarea onChange={onMessageChangeHandler}  value={props.state.newMessageText}></textarea>        
+        <button className={styles.button} onClick={addMessageHandler}>Send</button>
       </div>
 
     </div>

@@ -16,6 +16,7 @@ export type ProfilePageType = {
 export type DialogsPageType = {
   dialogs: Array<DialogsType>;
   messages: Array<MessagesType>;
+  newMessageText: string
 };
 export type PostsType = {
   id: number;
@@ -30,13 +31,17 @@ export type DialogsType = {
   name: string;
   id: number;
 };
-export type ActionTypes = addPostACType | updateNewPostTextACType
+export type ActionTypes = addPostACType | updateNewPostTextACType | addMessageACType | updateNewMessageTextAC
 
 type addPostACType = ReturnType<typeof addPostAC>
 type updateNewPostTextACType = ReturnType<typeof updateNewPostTextAC>
+type addMessageACType = ReturnType<typeof addMessageAC>
+type updateNewMessageTextAC = ReturnType<typeof updateNewMessageTextAC>
 
 const ADD_POST = 'ADD-POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
+const ADD_MESSAGE = 'ADD-MESSAGE'
+const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT'
 
 export const store: StoreType = {
   _state: {
@@ -60,6 +65,7 @@ export const store: StoreType = {
         { id: 3, message: 'I am Crosby!' },
         { id: 4, message: 'Yo!' },
       ],
+      newMessageText: ''
     },
   },
   _rerenderEntireTree(state: StateType) {
@@ -89,6 +95,22 @@ export const store: StoreType = {
         this._rerenderEntireTree(this._state);
         return this._state
       }
+      case ADD_MESSAGE: {
+        let newMessage: MessagesType = {
+          id: 5,
+          message: this._state.dialogsPage.newMessageText,
+        };        
+        this._state.dialogsPage.messages.push(newMessage);
+        this._state.dialogsPage.newMessageText = '';
+        this._rerenderEntireTree(this._state);
+        return this._state
+      }
+      case UPDATE_NEW_MESSAGE_TEXT: {
+
+        this._state.dialogsPage.newMessageText = action.payload.newMessageText;
+        this._rerenderEntireTree(this._state);
+        return this._state
+      }
       default: return this._state
     }
   },
@@ -104,6 +126,7 @@ export const addPostAC = () => {
     type: ADD_POST
   } as const 
 }
+
 export const updateNewPostTextAC = (newText: string) => {
   return {
     type: UPDATE_NEW_POST_TEXT, 
@@ -111,9 +134,16 @@ export const updateNewPostTextAC = (newText: string) => {
   } as const 
 }
 
-// export const updateNewPostTextAC = (newText: string) => {
-//   return {
-//     type: UPDATE_NEW_POST_TEXT, 
-//     payload: {newText}
-//   } as const 
-// }
+export const addMessageAC = () => {
+  return {
+    type: ADD_MESSAGE 
+  } as const 
+}
+
+export const updateNewMessageTextAC = (newMessageText: string) => {
+  return {
+    type: UPDATE_NEW_MESSAGE_TEXT, 
+    payload: {newMessageText}
+  } as const 
+}
+
