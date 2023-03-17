@@ -1,19 +1,14 @@
 import React from 'react';
-import { addPostAC, updateNewPostTextAC } from '../../../redux/profile-reducer';
-import { ActionTypes, ProfilePageType } from '../../../redux/store';
+import { ProfilePageType } from '../../../redux/store';
 import styles from './MyPosts.module.css';
 import Post from './Post/Post';
 
 interface MyPostsPropsType extends ProfilePageType {
-  dispatch: (action: ActionTypes) => void;
+  updateNewPostText: (newText: string) => void
+  addPost: () => void
 }
 
 const MyPosts = (props: MyPostsPropsType) => {
-  // вынесли в index.ts
-  // let postData = [
-  //   {id: 1, message:'Hi how are you?', likesCount: 20},
-  //   {id: 2, message:'It is my first post', likesCount: 30}
-  // ]
 
   let postsElements = props.posts.map((p) => (
     <Post key={p.id} message={p.message} likesCount={p.likesCount} />
@@ -21,18 +16,14 @@ const MyPosts = (props: MyPostsPropsType) => {
 
   const newPostText = React.createRef<HTMLTextAreaElement>();
 
-  // const addPost = () => {
-  //   let text = newPostElement.current?.value
-  //   alert(text)
-  // }
 
   const addPostHandler = () => {
-    props.dispatch(addPostAC());
+    props.addPost()
   };
 
   const onPostChangeHandler = () => {
     let newText = newPostText.current ? newPostText.current.value : '----';
-    props.dispatch(updateNewPostTextAC(newText));
+    props.updateNewPostText(newText)
   };
 
   return (

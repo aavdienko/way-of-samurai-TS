@@ -1,6 +1,5 @@
-import React from 'react';
 import { PostsType, ProfilePageType } from '../../redux/store';
-import MyPosts from './MyPosts/MyPosts';
+import MyPostsContainer from './MyPosts/MyPostsContainer';
 import styles from './Profile.module.css';
 import { ProfileInfo } from './ProfileInfo/ProfileInfo';
 
@@ -13,7 +12,7 @@ const Profile = (props: ProfilePropsType) => {
   return (
     <div>
       <ProfileInfo />
-      <MyPosts
+      <MyPostsContainer
         posts={props.state.posts}
         newPostText={props.state.newPostText}
         dispatch={props.dispatch}
