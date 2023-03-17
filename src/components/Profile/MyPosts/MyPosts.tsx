@@ -1,26 +1,23 @@
 import React from 'react';
 import { addPostAC, updateNewPostTextAC } from '../../../redux/profile-reducer';
-import { ActionTypes, ProfilePageType} from '../../../redux/state';
+import { ActionTypes, ProfilePageType } from '../../../redux/store';
 import styles from './MyPosts.module.css';
 import Post from './Post/Post';
 
-
 interface MyPostsPropsType extends ProfilePageType {
-  dispatch: (action: ActionTypes) => void
+  dispatch: (action: ActionTypes) => void;
 }
 
-
-
 const MyPosts = (props: MyPostsPropsType) => {
-
   // вынесли в index.ts
   // let postData = [
   //   {id: 1, message:'Hi how are you?', likesCount: 20},
   //   {id: 2, message:'It is my first post', likesCount: 30}
   // ]
 
-  let postsElements = props.posts.map( p => <Post key={p.id} message={p.message} likesCount={p.likesCount}/>)
-
+  let postsElements = props.posts.map((p) => (
+    <Post key={p.id} message={p.message} likesCount={p.likesCount} />
+  ));
 
   const newPostText = React.createRef<HTMLTextAreaElement>();
 
@@ -30,28 +27,30 @@ const MyPosts = (props: MyPostsPropsType) => {
   // }
 
   const addPostHandler = () => {
-    props.dispatch(addPostAC())
-  }
+    props.dispatch(addPostAC());
+  };
 
   const onPostChangeHandler = () => {
-    let newText = newPostText.current ? newPostText.current.value : '----'
-    props.dispatch(updateNewPostTextAC(newText))
-  }
+    let newText = newPostText.current ? newPostText.current.value : '----';
+    props.dispatch(updateNewPostTextAC(newText));
+  };
 
   return (
     <div className={styles.postsBlock}>
       <h2>My Posts</h2>
       <div>
-        <textarea onChange={onPostChangeHandler} ref={newPostText} value={props.newPostText}></textarea>
+        <textarea
+          onChange={onPostChangeHandler}
+          ref={newPostText}
+          value={props.newPostText}
+        ></textarea>
       </div>
 
       <div>
         <button onClick={addPostHandler}>Add Post</button>
       </div>
 
-      <div className={styles.posts}>
-        {postsElements}
-      </div>
+      <div className={styles.posts}>{postsElements}</div>
     </div>
   );
 };

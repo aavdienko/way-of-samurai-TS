@@ -1,15 +1,14 @@
-
 import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
 import { Dialogs } from './components/Dialogs/Dialogs';
 import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 import Profile from './components/Profile/Profile';
-import { ActionTypes, StateType } from './redux/state';
+import { ActionTypes, StateType } from './redux/store';
 
 export type AppPropsType = {
   state: StateType;
-  dispatch: (action: ActionTypes) => void
+  dispatch: (action: ActionTypes) => void;
 };
 
 const App = (props: AppPropsType) => {
@@ -22,12 +21,20 @@ const App = (props: AppPropsType) => {
           <Route
             path="/profile"
             render={() => (
-              <Profile state={props.state.profilePage} dispatch={props.dispatch}/>
+              <Profile
+                state={props.state.profilePage}
+                dispatch={props.dispatch}
+              />
             )}
           />
           <Route
             path="/dialogs"
-            render={() => <Dialogs state={props.state.dialogsPage} dispatch={props.dispatch}/>}
+            render={() => (
+              <Dialogs
+                state={props.state.dialogsPage}
+                dispatch={props.dispatch}
+              />
+            )}
           />
           {/* <Route path='/news' render={() => <Profile posts={props.posts}/>} />
           <Route path='/music' render={() => <Profile posts={props.posts}/>} />

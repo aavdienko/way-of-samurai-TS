@@ -1,18 +1,17 @@
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import {StateType, store} from './redux/state';
-
+import { store } from './redux/redux-store';
+import { StateType } from './redux/store';
 
 const rerenderEntireTree = (state: StateType) => {
   ReactDOM.render(
     <BrowserRouter>
-      <App state={store.getState()} dispatch={store.dispatch.bind(store)} />,
+      <App state={state} dispatch={store.dispatch.bind(store)} />,
     </BrowserRouter>,
-  document.getElementById('root')
-);
-}
-
+    document.getElementById('root')
+  );
+};
 
 // let dialogs: Array<DialogsType> = [
 //   {id:1, name: 'Alex'},
@@ -33,7 +32,9 @@ const rerenderEntireTree = (state: StateType) => {
 //   {id: 2, message:'It is my first post', likesCount: 30}
 // ]
 
+rerenderEntireTree(store.getState());
 
-rerenderEntireTree(store._state)
-
-store.subscribe(rerenderEntireTree)
+store.subscribe(()=>{
+  const state = store.getState()
+  rerenderEntireTree(state)
+})
