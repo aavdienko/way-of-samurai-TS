@@ -37,7 +37,7 @@ export type ActionTypes = ProfileMainActionType | DialogsMainActionType
 
 
 
-export const store: StoreType = {
+const store: StoreType = {
   _state: {
     profilePage: {
       posts: [

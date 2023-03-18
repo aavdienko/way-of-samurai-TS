@@ -3,19 +3,17 @@ import MyPostsContainer from './MyPosts/MyPostsContainer';
 import styles from './Profile.module.css';
 import { ProfileInfo } from './ProfileInfo/ProfileInfo';
 
-export type ProfilePropsType = {
-  state: ProfilePageType;
-  dispatch: (action: any) => void;
-};
+// export type ProfilePropsType = {
+//   state: ProfilePageType;
+//   dispatch: (action: any) => void;
+// };
 
-const Profile = (props: ProfilePropsType) => {
+const Profile = () => {
   return (
     <div>
       <ProfileInfo />
       <MyPostsContainer
-        posts={props.state.posts}
-        newPostText={props.state.newPostText}
-        dispatch={props.dispatch}
+
       />
     </div>
   );

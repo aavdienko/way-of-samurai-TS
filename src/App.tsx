@@ -7,12 +7,12 @@ import Navbar from './components/Navbar/Navbar';
 import Profile from './components/Profile/Profile';
 import { ActionTypes, StateType } from './redux/store';
 
-export type AppPropsType = {
-  state: StateType;
-  dispatch: (action: ActionTypes) => void;
-};
+// export type AppPropsType = {
+//   state: StateType;
+//   dispatch: (action: ActionTypes) => void;
+// };
 
-const App = (props: AppPropsType) => {
+const App = () => {
   return (
     <BrowserRouter>
       <div className="app-wraper">
@@ -23,8 +23,7 @@ const App = (props: AppPropsType) => {
             path="/profile"
             render={() => (
               <Profile
-                state={props.state.profilePage}
-                dispatch={props.dispatch}
+
               />
             )}
           />
@@ -32,8 +31,6 @@ const App = (props: AppPropsType) => {
             path="/dialogs"
             render={() => (
               <DialogsContainer
-                state={props.state.dialogsPage}
-                dispatch={props.dispatch}
               />
             )}
           />
