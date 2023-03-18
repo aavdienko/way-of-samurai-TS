@@ -1,4 +1,4 @@
-import { ActionTypes, PostsType, ProfilePageType } from './store';
+import { ActionTypes} from './store';
 
 export const ADD_POST = 'ADD-POST';
 export const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
@@ -8,8 +8,19 @@ type updateNewPostTextACType = ReturnType<typeof updateNewPostTextAC>;
 
 export type ProfileMainActionType = addPostACType | updateNewPostTextACType;
 
+type PostsType = {
+  id: number;
+  message: string;
+  likesCount: number;
+};
+
+export type InitialStateType = {
+  newPostText: string;
+  posts: Array<PostsType>;
+};
+
 // Создали начальный стейт чтобы избжеать ощибок в начальной отрисовке
-const initialState: ProfilePageType = {
+const initialState: InitialStateType = {
   posts: [
     { id: 1, message: 'Hi how are you?', likesCount: 20 },
     { id: 2, message: 'It is my first post', likesCount: 30 },
@@ -17,7 +28,7 @@ const initialState: ProfilePageType = {
   newPostText: '',
 }
 
-export const profileReducer = (state: ProfilePageType = initialState, action: ActionTypes): ProfilePageType => {
+export const profileReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
   switch (action.type) {
     case ADD_POST: {
       let newPost: PostsType = {

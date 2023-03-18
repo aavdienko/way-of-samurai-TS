@@ -1,12 +1,8 @@
 import React from 'react';
-import { ProfilePageType } from '../../../redux/store';
 import styles from './MyPosts.module.css';
+import { MyPostsPropsType } from './MyPostsContainer';
 import Post from './Post/Post';
 
-interface MyPostsPropsType extends ProfilePageType {
-  updateNewPostText: (newText: string) => void
-  addPost: () => void
-}
 
 const MyPosts = (props: MyPostsPropsType) => {
 

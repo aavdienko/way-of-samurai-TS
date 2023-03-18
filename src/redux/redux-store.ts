@@ -4,13 +4,13 @@ import { combineReducers, createStore } from "redux";
 
 // соеденяем все редьюсеры в один с помощью combine reducer
 
-type RootReducersType = ReturnType<typeof RootReducers>
+export type AppStateType = ReturnType<typeof RootReducer>
 
-const RootReducers = combineReducers({
+const RootReducer = combineReducers({
   profilePage: profileReducer,
   dialogsPage: dialogsReducer
 })
 
 
-export const store = createStore(RootReducers)
+export const store = createStore(RootReducer)
 

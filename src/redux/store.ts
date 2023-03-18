@@ -11,30 +11,29 @@ export type StateType = {
   profilePage: ProfilePageType;
   dialogsPage: DialogsPageType;
 };
-export type ProfilePageType = {
+type ProfilePageType = {
   newPostText: string;
   posts: Array<PostsType>;
 };
-export type DialogsPageType = {
+type DialogsPageType = {
   dialogs: Array<DialogsType>;
   messages: Array<MessagesType>;
   newMessageText: string;
 };
-export type PostsType = {
+type PostsType = {
   id: number;
   message: string;
   likesCount: number;
 };
-export type MessagesType = {
+type MessagesType = {
   id: number;
   message: string;
 };
-export type DialogsType = {
+type DialogsType = {
   name: string;
   id: number;
 };
 export type ActionTypes = ProfileMainActionType | DialogsMainActionType
-
 
 
 const store: StoreType = {
