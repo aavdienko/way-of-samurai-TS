@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import styles from './MyPosts.module.css';
 import { MyPostsPropsType } from './MyPostsContainer';
 import Post from './Post/Post';
@@ -6,19 +6,19 @@ import Post from './Post/Post';
 
 const MyPosts = (props: MyPostsPropsType) => {
 
-  let postsElements = props.posts.map((p) => (
-    <Post key={p.id} message={p.message} likesCount={p.likesCount} />
+  let postsElements = props.posts.map((p, index) => (
+    <Post key={index} message={p.message} likesCount={p.likesCount} />
   ));
 
-  const newPostText = React.createRef<HTMLTextAreaElement>();
+  // const newPostText = React.createRef<HTMLTextAreaElement>();
 
 
   const addPostHandler = () => {
     props.addPost()
   };
 
-  const onPostChangeHandler = () => {
-    let newText = newPostText.current ? newPostText.current.value : '----';
+  const onPostChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = e.currentTarget.value
     props.updateNewPostText(newText)
   };
 
@@ -28,7 +28,7 @@ const MyPosts = (props: MyPostsPropsType) => {
       <div>
         <textarea
           onChange={onPostChangeHandler}
-          ref={newPostText}
+          // ref={newPostText}
           value={props.newPostText}
         ></textarea>
       </div>

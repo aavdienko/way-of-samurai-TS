@@ -25,7 +25,7 @@ const initialState: InitialStateType = {
     { id: 1, message: 'Hi how are you?', likesCount: 20 },
     { id: 2, message: 'It is my first post', likesCount: 30 },
   ],
-  newPostText: '',
+  newPostText: 'New Post placeholder',
 }
 
 export const profileReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
@@ -36,16 +36,17 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
         message: state.newPostText,
         likesCount: 0,
       };
-      const stateCopy = {...state}
-      stateCopy.posts = [...state.posts]
-      stateCopy.posts.push(newPost);
-      stateCopy.newPostText = '';
-      return stateCopy;
+      return {
+        ...state,
+        posts: [newPost, ...state.posts],
+        newPostText: ''
+      }
     }
     case UPDATE_NEW_POST_TEXT: {
-      const stateCopy = {...state}
-      stateCopy.newPostText = action.payload.newText;
-      return stateCopy;
+      return {
+        ...state,
+        newPostText: action.payload.newText
+      }
     }
     default:
       return state;

@@ -3,15 +3,16 @@ import styles from './Dialogs.module.css';
 import { Message } from './Message/Message';
 import { DialogItem } from './DialogItem/DialogItem';
 import { DialogsPropsType } from './DialogsContainer';
+import { constants } from 'buffer';
 
 
 export const Dialogs = (props: DialogsPropsType) => {
 
-  let dialogsElements = props.state.dialogs.map((d) => (
-    <DialogItem key={d.id} name={d.name} id={d.id} />
+  const dialogsElements = props.state.dialogs.map((d, index) => (
+    <DialogItem key={index} name={d.name} id={d.id} />
   ));
-  let messageElements = props.state.messages.map((m) => (
-    <Message key={m.id} message={m.message} />
+  const messageElements = props.state.messages.map((m, index) => (
+    <Message key={index} message={m.message} />
   ));
 
   // const newMessageElement = React.createRef<HTMLTextAreaElement>() - заменили на event
@@ -21,7 +22,7 @@ export const Dialogs = (props: DialogsPropsType) => {
   };
 
   const onMessageChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    let newMessageText = e.currentTarget.value;
+    const newMessageText = e.currentTarget.value;
     // let newMessageText = newMessageElement.current ? newMessageElement.current.value : '----'
     props.onMessageChangeHandler(newMessageText)
   };

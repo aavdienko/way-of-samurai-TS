@@ -35,26 +35,29 @@ const initialState: InitialStateType = {
     { id: 3, message: 'I am Crosby!' },
     { id: 4, message: 'Yo!' },
   ],
-  newMessageText: '',
+  newMessageText: 'New Message placeholder',
 }
 
 export const dialogsReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
+
   switch (action.type) {
     case ADD_MESSAGE: {
       const newMessage: MessagesType = {
         id: 5,
         message: state.newMessageText,
       };
-      const stateCopy = {...state}
-      stateCopy.messages = [...state.messages]
-      stateCopy.messages.push(newMessage);
-      stateCopy.newMessageText = '';
-      return stateCopy;
+      return {
+        ...state,
+        messages: [...state.messages, newMessage],
+        newMessageText: ''
+      }
+
     }
     case UPDATE_NEW_MESSAGE_TEXT: {
-      const stateCopy = {...state}
-      stateCopy.newMessageText = action.payload.newMessageText;
-      return stateCopy;
+      return {
+        ...state,
+        newMessageText: action.payload.newMessageText
+      }
     }
     default:
       return state;
