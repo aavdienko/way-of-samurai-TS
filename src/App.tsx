@@ -30,8 +30,7 @@ const App = () => {
           <Route
             path="/dialogs"
             render={() => (
-              <DialogsContainer
-              />
+              <DialogsContainer/>
             )}
           />
           {/* <Route path='/news' render={() => <Profile posts={props.posts}/>} />

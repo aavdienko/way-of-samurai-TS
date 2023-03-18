@@ -1,38 +1,35 @@
-import { ActionTypes, DialogsPageType } from '../../redux/store';
+import { ActionTypes, DialogsPageType, PostsType, StateType } from '../../redux/store';
 import {
   addMessageAC,
   updateNewMessageTextAC,
 } from '../../redux/dialogs-reducer';
 import { Dialogs } from './Dialogs';
-import { StoreContext } from '../../StoreContext';
+import { connect } from 'react-redux';
 
 // type DialogsPropsType = {
 //   state: DialogsPageType;
 //   dispatch: (action: ActionTypes) => void;
 // };
 
-export const DialogsContainer = () => {
-  return (
-    <StoreContext.Consumer>
-      {(store) => {
-        const state = store.getState().dialogsPage
+type DialogsMSTPType = {
+  state: DialogsPageType
+}
 
-        const addMessageHandler = () => {
-          store.dispatch(addMessageAC());
-        };
+type DialogsMDTPType = {
+  addMessageHandler: () => void
+  onMessageChangeHandler: (newMessageText: string) => void
+}
 
-        const onMessageChangeHandler = (newMessageText: string) => {
-          store.dispatch(updateNewMessageTextAC(newMessageText));
-        };
+const mapStateToProps = (state: StateType): DialogsMSTPType => {
+  return {
+    state: state.dialogsPage
+  }
+}
 
-        return (
-          <Dialogs
-            addMessageHandler={addMessageHandler}
-            onMessageChangeHandler={onMessageChangeHandler}
-            state={state}
-          />
-        );
-      }}
-    </StoreContext.Consumer>
-  );
-};
+const mapDispatchToProps = (dispatch: (action: ActionTypes) => void): DialogsMDTPType => {
+  return {
+    addMessageHandler: () => dispatch(addMessageAC()),
+    onMessageChangeHandler:(newMessageText: string) => dispatch(updateNewMessageTextAC(newMessageText))
+  }
+}
+export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs)

@@ -5,7 +5,7 @@ export type StoreType = {
   getState: () => StateType;
   _rerenderEntireTree: (state: StateType) => void;
   subscribe: (observer: (state: StateType) => void) => void;
-  dispatch: (action: any) => void;
+  dispatch: (action: ActionTypes) => void;
 };
 export type StateType = {
   profilePage: ProfilePageType;
