@@ -6,3 +6,7 @@
   border-radius: 15%;
 
 }
+
+.selectedPage {
+  font-weight: bold;
+}

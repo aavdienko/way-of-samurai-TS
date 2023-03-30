@@ -3,9 +3,14 @@ import { UserPhotoUrl } from '../assets/photoUrls';
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
+const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
+const SET_TOTAL_COUNT = 'SET_TOTAL_COUN'
 
 export type InitialStateType = {
-  users: Array<UserType>;
+  users: Array<UserType>
+  pageSize: number
+  totalUsersCount: number
+  currentPage: number
 };
 
 // {
@@ -45,15 +50,17 @@ type UnFollowACType = ReturnType<typeof unFollowAC>;
 
 type setUsersACType = ReturnType<typeof setUsersAC>;
 
-type UsersMainActionType = setUsersACType | FollowACType | UnFollowACType;
+type setCurrentPageACType = ReturnType<typeof setCurrentPageAC>
+
+type setTotalCountACType = ReturnType<typeof setTotalCountAC>
+
+type UsersMainActionType = setUsersACType | FollowACType | UnFollowACType | setCurrentPageACType |setTotalCountACType
 
 const initialState: InitialStateType = {
-  users: [
-    // {id: 1, photoUrl: UserPhotoUrl, followed: true, fullName: 'Alex', status: 'Dad', location: {city: 'Prague', country: 'CZ'}},
-    // {id: 2, photoUrl: UserPhotoUrl, followed: false, fullName: 'Lera', status: 'Mom', location: {city: 'Prague', country: 'CZ'}},
-    // {id: 3, photoUrl: UserPhotoUrl, followed: false, fullName: 'Soko', status: 'Kot', location: {city: 'Prague', country: 'CZ'}},
-    // {id: 4, photoUrl: UserPhotoUrl, followed: false, fullName: 'Crosby', status: 'Podsvinok', location: {city: 'Prague', country: 'CZ'}}
-  ],
+  users: [],
+  pageSize: 10, 
+  totalUsersCount: 0,
+  currentPage: 1,
 };
 
 export const usersReducer = (
@@ -84,8 +91,22 @@ export const usersReducer = (
     case SET_USERS: {
       return {
         ...state,
-        users: [...state.users, ...action.payload.users],
+        users: action.payload.users
       };
+    }
+
+    case SET_CURRENT_PAGE: {
+      return {
+        ...state,
+        currentPage: action.payload.currentPage
+      }
+    }
+
+    case SET_TOTAL_COUNT: {
+      return {
+        ...state,
+        totalUsersCount: action.payload.totalUsersCount
+      }
     }
 
     default:
@@ -98,7 +119,7 @@ export const followAC = (userId: number) => {
     type: FOLLOW,
     payload: {
       id: userId,
-    },
+    }
   } as const;
 };
 
@@ -107,7 +128,7 @@ export const unFollowAC = (userId: number) => {
     type: UNFOLLOW,
     payload: {
       id: userId,
-    },
+    }
   } as const;
 };
 
@@ -116,6 +137,24 @@ export const setUsersAC = (users: Array<UserType>) => {
     type: SET_USERS,
     payload: {
       users: users,
-    },
+    }
+  } as const;
+};
+
+export const setCurrentPageAC = (currentPage: number) => {
+  return {
+    type: SET_CURRENT_PAGE,
+    payload: {
+      currentPage,
+    }
+  } as const;
+};
+
+export const setTotalCountAC = (totalUsersCount: number) => {
+  return {
+    type: SET_TOTAL_COUNT,
+    payload: {
+      totalUsersCount,
+    }
   } as const;
 };
