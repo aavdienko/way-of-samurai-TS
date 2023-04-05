@@ -2,13 +2,13 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { AppStateType } from '../../redux/redux-store';
 import {
-  changeIsFetchingAC,
-  followAC,
+  changeIsFetching,
+  follow,
   InitialStateType,
-  setCurrentPageAC,
-  setTotalCountAC,
-  setUsersAC,
-  unFollowAC,
+  setCurrentPage,
+  setTotalCount,
+  setUsers,
+  unFollow,
   UserType,
 } from '../../redux/users-reducer';
 import React from 'react';
@@ -78,7 +78,7 @@ export class UsersClass extends React.Component<UsersPropsType> {
           onClickHandler={this.onClickHandler}
           users={this.props.users}
           follow={this.props.follow}
-          unfollow={this.props.unfollow}
+          unfollow={this.props.unFollow}
         />}
       </div>
     );
@@ -134,7 +134,7 @@ export class UsersClass extends React.Component<UsersPropsType> {
 type UsersMSTPType = InitialStateType;
 type UsersMDTPType = {
   follow: (userId: number) => void;
-  unfollow: (userId: number) => void;
+  unFollow: (userId: number) => void;
   setUsers: (users: Array<UserType>) => void;
   setCurrentPage: (currentPage: number) => void;
   setTotalCount: (totalUsersCount: number) => void;
@@ -152,30 +152,30 @@ const mapStateToProps = (state: AppStateType): UsersMSTPType => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): UsersMDTPType => {
-  return {
-    follow: (userId: number) => {
-      dispatch(followAC(userId));
-    },
-    unfollow: (userId: number) => {
-      dispatch(unFollowAC(userId));
-    },
-    setUsers: (users: Array<UserType>) => {
-      dispatch(setUsersAC(users));
-    },
-    setCurrentPage: (currentPage: number) => {
-      dispatch(setCurrentPageAC(currentPage));
-    },
-    setTotalCount: (totalUsersCount: number) => {
-      dispatch(setTotalCountAC(totalUsersCount));
-    },
-    changeIsFetching: (isFetching: boolean) => {
-      dispatch(changeIsFetchingAC(isFetching));
-    },
-  };
-};
+// переписаль MDTP на короткую запись, в которой мы просто передаем колбэки -  actioncreators.
+// const mapDispatchToProps = (dispatch: Dispatch): UsersMDTPType => {
+//   return {
+//     follow: (userId: number) => {
+//       dispatch(followAC(userId));
+//     },
+//     unfollow: (userId: number) => {
+//       dispatch(unFollowAC(userId));
+//     },
+//     setUsers: (users: Array<UserType>) => {
+//       dispatch(setUsersAC(users));
+//     },
+//     setCurrentPage: (currentPage: number) => {
+//       dispatch(setCurrentPageAC(currentPage));
+//     },
+//     setTotalCount: (totalUsersCount: number) => {
+//       dispatch(setTotalCountAC(totalUsersCount));
+//     },
+//     changeIsFetching: (isFetching: boolean) => {
+//       dispatch(changeIsFetchingAC(isFetching));
+//     },
+//   };
+// };
 
 export const UsersContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps, {follow, unFollow, setUsers, setCurrentPage, setTotalCount, changeIsFetching}
 )(UsersClass);
