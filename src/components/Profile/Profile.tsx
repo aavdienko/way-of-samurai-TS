@@ -1,6 +1,7 @@
 
 import {MyPostsContainer} from './MyPosts/MyPostsContainer';
 import styles from './Profile.module.css';
+import { ProfilePropsType } from './ProfileContainer';
 import { ProfileInfo } from './ProfileInfo/ProfileInfo';
 
 // export type ProfilePropsType = {
@@ -8,12 +9,11 @@ import { ProfileInfo } from './ProfileInfo/ProfileInfo';
 //   dispatch: (action: any) => void;
 // };
 
-const Profile = () => {
+const Profile = (props: ProfilePropsType) => {
   return (
     <div>
-      <ProfileInfo />
+      <ProfileInfo profile={props.profile}/>
       <MyPostsContainer
-
       />
     </div>
   );

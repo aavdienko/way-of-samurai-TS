@@ -1,4 +1,4 @@
-import {ActionTypes } from './store';
+
 
 export const ADD_MESSAGE = 'ADD-MESSAGE';
 export const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
@@ -38,7 +38,7 @@ const initialState: InitialStateType = {
   newMessageText: 'New Message placeholder',
 }
 
-export const dialogsReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
+export const dialogsReducer = (state: InitialStateType = initialState, action: DialogsMainActionType): InitialStateType => {
 
   switch (action.type) {
     case ADD_MESSAGE: {

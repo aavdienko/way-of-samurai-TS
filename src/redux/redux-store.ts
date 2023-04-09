@@ -16,3 +16,5 @@ const RootReducer = combineReducers({
 
 export const store = createStore(RootReducer)
 
+// @ts-ignore
+window.store = store;

@@ -16,6 +16,17 @@ import axios from 'axios';
 import { Users } from './Users';
 import { Preloader } from '../../common/preloader/Preloader';
 
+type UsersMSTPType = InitialStateType;
+type UsersMDTPType = {
+  follow: (userId: number) => void;
+  unFollow: (userId: number) => void;
+  setUsers: (users: Array<UserType>) => void;
+  setCurrentPage: (currentPage: number) => void;
+  setTotalCount: (totalUsersCount: number) => void;
+  changeIsFetching: (isFetching: boolean) => void;
+};
+export type UsersPropsType = UsersMSTPType & UsersMDTPType;
+
 export class UsersClass extends React.Component<UsersPropsType> {
   // если передаем только пропсы в супер, можем это не писать, это происходит по умолчанию
   // constructor(props: UsersPropsType) {
@@ -130,17 +141,6 @@ export class UsersClass extends React.Component<UsersPropsType> {
     // );
   }
 }
-
-type UsersMSTPType = InitialStateType;
-type UsersMDTPType = {
-  follow: (userId: number) => void;
-  unFollow: (userId: number) => void;
-  setUsers: (users: Array<UserType>) => void;
-  setCurrentPage: (currentPage: number) => void;
-  setTotalCount: (totalUsersCount: number) => void;
-  changeIsFetching: (isFetching: boolean) => void;
-};
-export type UsersPropsType = UsersMSTPType & UsersMDTPType;
 
 const mapStateToProps = (state: AppStateType): UsersMSTPType => {
   return {
