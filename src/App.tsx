@@ -5,6 +5,7 @@ import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 import { UsersContainer } from './components/Users/UsersContainer';
 import { ProfileContainer } from './components/Profile/ProfileContainer';
+import { HeaderContainer, HeaderContainerClass } from './components/Header/HeaderContainer';
 
 
 // export type AppPropsType = {
@@ -16,7 +17,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <div className="app-wraper">
-        <Header />
+        <HeaderContainer />
         <Navbar />
         <div className="app-wraper-content">
           <Route

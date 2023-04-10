@@ -10,7 +10,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 type ProfileMSTPType = {
   profile: ProfileType | null
 };
-type UsersMDTPType = {
+type ProfileMDTPType = {
   setUserProfile: (profile: ProfileType) => void
 }
 
@@ -20,7 +20,7 @@ type PathParamsType = {
 
 type OwnPropsType = RouteComponentProps<PathParamsType> & ProfilePropsType
 
-export type ProfilePropsType = ProfileMSTPType & UsersMDTPType;
+export type ProfilePropsType = ProfileMSTPType & ProfileMDTPType;
 
 class ProfileContainerClass extends React.Component<OwnPropsType> {
 
