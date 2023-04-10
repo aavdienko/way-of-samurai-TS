@@ -4,6 +4,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux/redux-store';
 import { InitialStateType, ProfileType, setUserProfile } from '../../redux/profile-reducer';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 
 type ProfileMSTPType = {
@@ -12,14 +13,26 @@ type ProfileMSTPType = {
 type UsersMDTPType = {
   setUserProfile: (profile: ProfileType) => void
 }
+
+type PathParamsType = {
+  userId: string
+}
+
+type OwnPropsType = RouteComponentProps<PathParamsType> & ProfilePropsType
+
 export type ProfilePropsType = ProfileMSTPType & UsersMDTPType;
 
-class ProfileContainer extends React.Component<ProfilePropsType> {
+class ProfileContainerClass extends React.Component<OwnPropsType> {
 
   componentDidMount(): void {
+    let userId = this.props.match.params.userId
+    debugger
+    if(!userId) {
+      userId = '2'
+    }
 
     axios
-      .get(`https://social-network.samuraijs.com/api/1.0/profile/2`)
+      .get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
       .then((response) => {
 
         console.log(response)
@@ -43,4 +56,6 @@ const mapStateToProps = (state: AppStateType): ProfileMSTPType => {
   }
 }
 
-export default connect(mapStateToProps, {setUserProfile})(ProfileContainer)
+const WithUrlDataProfileContainer = withRouter(ProfileContainerClass) // забираем userID из URL с помощью withRouter котрый создает контерйнерную компоненту для этого
+
+export const ProfileContainer = connect(mapStateToProps, {setUserProfile})(WithUrlDataProfileContainer)

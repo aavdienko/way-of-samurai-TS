@@ -4,7 +4,8 @@ import { DialogsContainer } from './components/Dialogs/DialogsContainer';
 import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 import { UsersContainer } from './components/Users/UsersContainer';
-import ProfileContainer from './components/Profile/ProfileContainer';
+import { ProfileContainer } from './components/Profile/ProfileContainer';
+
 
 // export type AppPropsType = {
 //   state: StateType;
@@ -19,7 +20,7 @@ const App = () => {
         <Navbar />
         <div className="app-wraper-content">
           <Route
-            path="/profile"
+            path="/profile/:userId?"
             render={() => (
               <ProfileContainer/>
             )}
