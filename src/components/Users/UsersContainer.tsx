@@ -38,7 +38,12 @@ export class UsersClass extends React.Component<UsersPropsType> {
     this.props.changeIsFetching(true);
     axios
       .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`
+        `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`, {
+          withCredentials: true, 
+          headers: {
+            'API-KEY': '149d62aa-bd4d-437d-ba09-e1ee03f78f90',
+          },
+        }
       )
       .then((response) => {
         this.props.changeIsFetching(false);
@@ -60,7 +65,12 @@ export class UsersClass extends React.Component<UsersPropsType> {
     this.props.changeIsFetching(true);
     axios
       .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`
+        `https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`, {
+          withCredentials: true, 
+          headers: {
+            'API-KEY': '149d62aa-bd4d-437d-ba09-e1ee03f78f90',
+          },
+        }
       )
       .then((response) => {
         this.props.changeIsFetching(false);
