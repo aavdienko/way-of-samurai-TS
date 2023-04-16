@@ -24,7 +24,6 @@ export class HeaderContainerClass extends React.Component<HeaderPropsType> {
         withCredentials: true
       })
       .then((response) => {
-        debugger
         if(response.data.resultCode === 0){
           this.props.setUserData(response.data.data);
         }

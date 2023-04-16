@@ -3,6 +3,7 @@ import { UserPhotoUrl } from '../../assets/photoUrls';
 import { UserType } from '../../redux/users-reducer';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
+import { usersAPI } from '../../api/api';
 
 type UserPropsType = {
   totalUsersCount: number;
@@ -12,6 +13,8 @@ type UserPropsType = {
   users: UserType[];
   follow: (userId: number) => void;
   unfollow: (userId: number) => void;
+  changeFollowRequest: (followRequest: boolean, userId: number ) => void
+  followRequest: Array<number>,
 };
 
 export const Users = (props: UserPropsType) => {
@@ -57,43 +60,40 @@ export const Users = (props: UserPropsType) => {
             <div>
               {user.followed ? (
                 <button
+                  disabled={props.followRequest.some(id => id === user.id)}
                   onClick={() => {
-                    axios
-                      .delete(
-                        `https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
-                        {
-                          withCredentials: true,
-                          headers: {
-                            'API-KEY': '149d62aa-bd4d-437d-ba09-e1ee03f78f90',
-                          },
-                        }
-                      )
-                      .then((response) => {
-                        if (response.data.resultCode == 0) {
+                    props.changeFollowRequest(true, user.id)
+                    usersAPI.unfollow(user.id)
+                      .then((data) => {
+                        if (data.resultCode == 0) {
                           props.unfollow(user.id);
                         }
+                        props.changeFollowRequest(false, user.id)
                       });
                   }}
                 >
                   Unfollow
                 </button>
               ) : (
-                <button onClick={() => {
-                  axios
-                      .post(
-                        `https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
-                        {},
-                        {
-                          withCredentials: true, 
-                          headers: {
-                            'API-KEY': '149d62aa-bd4d-437d-ba09-e1ee03f78f90',
-                          },
-                        }
-                      )
-                      .then((response) => {
-                        if (response.data.resultCode == 0) {
+                <button disabled={props.followRequest.some(id => id === user.id)} onClick={() => {
+                  props.changeFollowRequest(true, user.id)
+                  usersAPI.follow(user.id)
+                  // axios
+                  //     .post(
+                  //       `https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
+                  //       {},
+                  //       {
+                  //         withCredentials: true, 
+                  //         headers: {
+                  //           'API-KEY': '149d62aa-bd4d-437d-ba09-e1ee03f78f90',
+                  //         },
+                  //       }
+                  //     )
+                      .then((data) => {
+                        if (data.resultCode == 0) {
                           props.follow(user.id);
                         }
+                        props.changeFollowRequest(false, user.id)
                       });
                 }}>Follow</button>
               )}

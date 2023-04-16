@@ -1,3 +1,4 @@
+
 import { UserPhotoUrl } from '../assets/photoUrls';
 
 const FOLLOW = 'FOLLOW';
@@ -6,13 +7,15 @@ const SET_USERS = 'SET_USERS';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
 const SET_TOTAL_COUNT = 'SET_TOTAL_COUN'
 const CHANGE_IS_FETCHING = 'CHANGE_IS_FETCHING'
+const CHANGE_FOLLOW_REQUEST = 'CHANGE_FOLLOW_REQUEST'
 
 export type InitialStateType = {
   users: Array<UserType>
   pageSize: number
   totalUsersCount: number
   currentPage: number
-  isFetching: boolean
+  isFetching: boolean,
+  followRequest: Array<number>
 };
 
 // {
@@ -58,14 +61,17 @@ type setTotalCountACType = ReturnType<typeof setTotalCount>
 
 type changeIsFetchingACType = ReturnType<typeof changeIsFetching>
 
-type UsersMainActionType = setUsersACType | FollowACType | UnFollowACType | setCurrentPageACType |setTotalCountACType | changeIsFetchingACType
+type changeFollowRequestACType = ReturnType<typeof changeFollowRequest>
+
+type UsersMainActionType = setUsersACType | FollowACType | UnFollowACType | setCurrentPageACType |setTotalCountACType | changeIsFetchingACType | changeFollowRequestACType
 
 const initialState: InitialStateType = {
   users: [],
   pageSize: 10, 
   totalUsersCount: 0,
   currentPage: 1,
-  isFetching: false
+  isFetching: false,
+  followRequest: []
 };
 
 export const usersReducer = (
@@ -120,6 +126,16 @@ export const usersReducer = (
         isFetching: action.payload.isFetching
       }
     }
+
+    case CHANGE_FOLLOW_REQUEST: {
+      return {
+        ...state,
+        followRequest: action.payload.followRequest
+        ? [...state.followRequest, action.payload.userId]
+        : state.followRequest.filter(id => id !== action.payload.userId)
+      }
+    }
+
     default:
       return state;
   }
@@ -175,6 +191,16 @@ export const changeIsFetching = (isFetching: boolean) => {
     type: CHANGE_IS_FETCHING,
     payload: {
       isFetching,
+    }
+  } as const;
+};
+
+export const changeFollowRequest = (followRequest: boolean, userId: number) => {
+  return {
+    type: CHANGE_FOLLOW_REQUEST,
+    payload: {
+      followRequest,
+      userId
     }
   } as const;
 };
