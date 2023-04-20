@@ -1,8 +1,9 @@
 import { authReducer } from './auth-reducer';
 import { dialogsReducer } from './dialogs-reducer';
 import { profileReducer } from './profile-reducer';
-import { combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
 import { usersReducer } from './users-reducer';
+import thunkMiddleWare from 'redux-thunk'
 
 // соеденяем все редьюсеры в один с помощью combine reducer
 
@@ -16,7 +17,7 @@ const RootReducer = combineReducers({
 })
 
 
-export const store = createStore(RootReducer)
+export const store = createStore(RootReducer, applyMiddleware(thunkMiddleWare))
 
 // @ts-ignore
 window.store = store;

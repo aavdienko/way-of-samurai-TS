@@ -2,36 +2,39 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { AppStateType } from '../../redux/redux-store';
 import {
-  changeFollowRequest,
-  changeIsFetching,
   follow,
+  followThunkCreator,
+  getNewUsersPageTC,
+  getUsersThunkCreator,
   InitialStateType,
-  setCurrentPage,
-  setTotalCount,
-  setUsers,
   unFollow,
+  unFollowThunkCreator,
   UserType,
 } from '../../redux/users-reducer';
 import React from 'react';
-
 import { Users } from './Users';
 import { Preloader } from '../../common/preloader/Preloader';
-import { usersAPI } from '../../api/api';
+
 
 
 type UsersMSTPType = InitialStateType;
 type UsersMDTPType = {
   follow: (userId: number) => void;
   unFollow: (userId: number) => void;
-  setUsers: (users: Array<UserType>) => void;
-  setCurrentPage: (currentPage: number) => void;
-  setTotalCount: (totalUsersCount: number) => void;
-  changeIsFetching: (isFetching: boolean) => void;
-  changeFollowRequest: (followRequest: boolean, userId: number ) => void
+  // setUsers: (users: Array<UserType>) => void;
+  // setCurrentPage: (currentPage: number) => void;
+  // setTotalCount: (totalUsersCount: number) => void;
+  // changeIsFetching: (isFetching: boolean) => void;
+  // changeFollowRequest: (followRequest: boolean, userId: number ) => void
+  getUsersThunkCreator: (currentPage: number, pageSize: number) => void
+  followThunkCreator: (userId: number) => void
+  unFollowThunkCreator: (userId: number) => void
+  getNewUsersPageTC: (currentPage: number, pageSize: number) => void
 };
 export type UsersPropsType = UsersMSTPType & UsersMDTPType;
 
 export class UsersClass extends React.Component<UsersPropsType> {
+  
   // если передаем только пропсы в супер, можем это не писать, это происходит по умолчанию
   // constructor(props: UsersPropsType) {
   //   super(props)
@@ -39,33 +42,12 @@ export class UsersClass extends React.Component<UsersPropsType> {
 
   // Отрабатывает одиг раз, поэтому все запросы нужно делать здесь
   componentDidMount(): void {
-    this.props.changeIsFetching(true);
-    usersAPI.getUsers(this.props.currentPage, this.props.pageSize)
-      .then((data) => {
-        this.props.changeIsFetching(false);
-        this.props.setUsers(data.items);
-        this.props.setTotalCount(data.totalCount);
-      });
+    this.props.getUsersThunkCreator(this.props.currentPage, this.props.pageSize)
   }
-
-  // getUsers = () => {
-  //   if (this.props.users.length === 0) {
-  //     axios
-  //       .get('https://social-network.samuraijs.com/api/1.0/users')
-  //       .then((response) => this.props.setUsers(response.data.items));
-  //   }
-  // }
 
   //Переключение страниц пользователей 
   onClickHandler = (pageNumber: number) => {
-    this.props.setCurrentPage(pageNumber);
-    this.props.changeIsFetching(true);
-    usersAPI.getUsers(pageNumber, this.props.pageSize)
-      .then((data) => {
-        this.props.changeIsFetching(false);
-        this.props.setUsers(data.items);
-        this.props.setTotalCount(data.totalCount);
-      });
+    this.props.getNewUsersPageTC(pageNumber, this.props.pageSize)
   };
 
   render() {
@@ -87,10 +69,12 @@ export class UsersClass extends React.Component<UsersPropsType> {
           currentPage={this.props.currentPage}
           onClickHandler={this.onClickHandler}
           users={this.props.users}
-          follow={this.props.follow}
-          unfollow={this.props.unFollow}
-          changeFollowRequest={this.props.changeFollowRequest}
+          // follow={this.props.follow}
+          // unfollow={this.props.unFollow}
+          // changeFollowRequest={this.props.changeFollowRequest}
           followRequest={this.props.followRequest}
+          followThunkCreator={this.props.followThunkCreator}
+          unFollowThunkCreator={this.props.unFollowThunkCreator}
         />}
       </div>
     );
@@ -179,5 +163,5 @@ const mapStateToProps = (state: AppStateType): UsersMSTPType => {
 // };
 
 export const UsersContainer = connect(
-  mapStateToProps, {follow, unFollow, setUsers, setCurrentPage, setTotalCount, changeIsFetching, changeFollowRequest}
+  mapStateToProps, {follow, unFollow, getUsersThunkCreator, getNewUsersPageTC, followThunkCreator, unFollowThunkCreator}
 )(UsersClass);

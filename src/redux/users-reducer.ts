@@ -1,21 +1,22 @@
-
+import { Dispatch } from 'redux';
 import { UserPhotoUrl } from '../assets/photoUrls';
+import { usersAPI } from '../api/api';
 
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
-const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
-const SET_TOTAL_COUNT = 'SET_TOTAL_COUN'
-const CHANGE_IS_FETCHING = 'CHANGE_IS_FETCHING'
-const CHANGE_FOLLOW_REQUEST = 'CHANGE_FOLLOW_REQUEST'
+const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
+const SET_TOTAL_COUNT = 'SET_TOTAL_COUN';
+const CHANGE_IS_FETCHING = 'CHANGE_IS_FETCHING';
+const CHANGE_FOLLOW_REQUEST = 'CHANGE_FOLLOW_REQUEST';
 
 export type InitialStateType = {
-  users: Array<UserType>
-  pageSize: number
-  totalUsersCount: number
-  currentPage: number
-  isFetching: boolean,
-  followRequest: Array<number>
+  users: Array<UserType>;
+  pageSize: number;
+  totalUsersCount: number;
+  currentPage: number;
+  isFetching: boolean;
+  followRequest: Array<number>;
 };
 
 // {
@@ -55,23 +56,30 @@ type UnFollowACType = ReturnType<typeof unFollow>;
 
 type setUsersACType = ReturnType<typeof setUsers>;
 
-type setCurrentPageACType = ReturnType<typeof setCurrentPage>
+type setCurrentPageACType = ReturnType<typeof setCurrentPage>;
 
-type setTotalCountACType = ReturnType<typeof setTotalCount>
+type setTotalCountACType = ReturnType<typeof setTotalCount>;
 
-type changeIsFetchingACType = ReturnType<typeof changeIsFetching>
+type changeIsFetchingACType = ReturnType<typeof changeIsFetching>;
 
-type changeFollowRequestACType = ReturnType<typeof changeFollowRequest>
+type changeFollowRequestACType = ReturnType<typeof changeFollowRequest>;
 
-type UsersMainActionType = setUsersACType | FollowACType | UnFollowACType | setCurrentPageACType |setTotalCountACType | changeIsFetchingACType | changeFollowRequestACType
+type UsersMainActionType =
+  | setUsersACType
+  | FollowACType
+  | UnFollowACType
+  | setCurrentPageACType
+  | setTotalCountACType
+  | changeIsFetchingACType
+  | changeFollowRequestACType;
 
 const initialState: InitialStateType = {
   users: [],
-  pageSize: 10, 
+  pageSize: 10,
   totalUsersCount: 0,
   currentPage: 1,
   isFetching: false,
-  followRequest: []
+  followRequest: [],
 };
 
 export const usersReducer = (
@@ -102,38 +110,38 @@ export const usersReducer = (
     case SET_USERS: {
       return {
         ...state,
-        users: action.payload.users
+        users: action.payload.users,
       };
     }
 
     case SET_CURRENT_PAGE: {
       return {
         ...state,
-        currentPage: action.payload.currentPage
-      }
+        currentPage: action.payload.currentPage,
+      };
     }
 
     case SET_TOTAL_COUNT: {
       return {
         ...state,
-        totalUsersCount: action.payload.totalUsersCount
-      }
+        totalUsersCount: action.payload.totalUsersCount,
+      };
     }
 
     case CHANGE_IS_FETCHING: {
       return {
         ...state,
-        isFetching: action.payload.isFetching
-      }
+        isFetching: action.payload.isFetching,
+      };
     }
 
     case CHANGE_FOLLOW_REQUEST: {
       return {
         ...state,
         followRequest: action.payload.followRequest
-        ? [...state.followRequest, action.payload.userId]
-        : state.followRequest.filter(id => id !== action.payload.userId)
-      }
+          ? [...state.followRequest, action.payload.userId]
+          : state.followRequest.filter((id) => id !== action.payload.userId),
+      };
     }
 
     default:
@@ -146,7 +154,7 @@ export const follow = (userId: number) => {
     type: FOLLOW,
     payload: {
       id: userId,
-    }
+    },
   } as const;
 };
 
@@ -155,7 +163,7 @@ export const unFollow = (userId: number) => {
     type: UNFOLLOW,
     payload: {
       id: userId,
-    }
+    },
   } as const;
 };
 
@@ -164,7 +172,7 @@ export const setUsers = (users: Array<UserType>) => {
     type: SET_USERS,
     payload: {
       users: users,
-    }
+    },
   } as const;
 };
 
@@ -173,7 +181,7 @@ export const setCurrentPage = (currentPage: number) => {
     type: SET_CURRENT_PAGE,
     payload: {
       currentPage,
-    }
+    },
   } as const;
 };
 
@@ -182,7 +190,7 @@ export const setTotalCount = (totalUsersCount: number) => {
     type: SET_TOTAL_COUNT,
     payload: {
       totalUsersCount,
-    }
+    },
   } as const;
 };
 
@@ -191,7 +199,7 @@ export const changeIsFetching = (isFetching: boolean) => {
     type: CHANGE_IS_FETCHING,
     payload: {
       isFetching,
-    }
+    },
   } as const;
 };
 
@@ -200,7 +208,53 @@ export const changeFollowRequest = (followRequest: boolean, userId: number) => {
     type: CHANGE_FOLLOW_REQUEST,
     payload: {
       followRequest,
-      userId
-    }
+      userId,
+    },
   } as const;
+};
+
+export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(changeIsFetching(true));
+    usersAPI.getUsers(currentPage, pageSize).then((data) => {
+      dispatch(changeIsFetching(false));
+      dispatch(setUsers(data.items));
+      dispatch(setTotalCount(data.totalCount));
+    });
+  };
+};
+
+export const getNewUsersPageTC = (pageNumber: number, usersOnPage: number) => {
+
+  return (dispatch: Dispatch) => {
+      dispatch(changeIsFetching(true))
+      dispatch(setCurrentPage(pageNumber))
+      usersAPI.getUsers(usersOnPage, pageNumber)
+          .then(data => dispatch(setUsers(data.items)))
+          .finally(() => dispatch(changeIsFetching(false)))
+  }
+}
+
+export const unFollowThunkCreator = (userId: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(changeFollowRequest(true, userId));
+    usersAPI.unfollow(userId).then((data) => {
+      if (data.resultCode == 0) {
+        dispatch(unFollow(userId));
+      }
+      dispatch(changeFollowRequest(false, userId));
+    });
+  };
+};
+
+export const followThunkCreator = (userId: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(changeFollowRequest(true, userId));
+    usersAPI.follow(userId).then((data) => {
+      if (data.resultCode == 0) {
+        dispatch(follow(userId));
+      }
+      dispatch(changeFollowRequest(false, userId));
+    });
+  };
 };
