@@ -1,7 +1,7 @@
 import styles from './Users.module.css';
 import { UserPhotoUrl } from '../../assets/photoUrls';
 import { UserType, followThunkCreator, unFollowThunkCreator } from '../../redux/users-reducer';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { usersAPI } from '../../api/api';
 
@@ -14,11 +14,16 @@ type UserPropsType = {
   followRequest: Array<number>,
   followThunkCreator: (userId: number) => void
   unFollowThunkCreator: (userId: number) => void
+  isAuth: boolean
 };
 
 export const Users = (props: UserPropsType) => {
   const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
   const pages = [];
+
+  if(!props.isAuth){
+    return <Redirect to={'/login'}/>
+  }
 
   for (let i = 1; i <= pagesCount; i++) {
     pages.push(i);

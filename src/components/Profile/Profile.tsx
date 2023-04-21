@@ -1,4 +1,5 @@
 
+import { Redirect } from 'react-router-dom';
 import {MyPostsContainer} from './MyPosts/MyPostsContainer';
 import styles from './Profile.module.css';
 import { ProfilePropsType } from './ProfileContainer';
@@ -10,6 +11,11 @@ import { ProfileInfo } from './ProfileInfo/ProfileInfo';
 // };
 
 const Profile = (props: ProfilePropsType) => {
+
+  if(!props.isAuth){
+    return <Redirect to={'/login'}/>
+  }
+
   return (
     <div>
       <ProfileInfo profile={props.profile}/>

@@ -15,6 +15,7 @@ import { Dispatch } from 'redux';
 
 type DialogsMSTPType = {
   state: InitialStateType
+  isAuth: boolean
 }
 
 type DialogsMDTPType = {
@@ -26,7 +27,8 @@ export type DialogsPropsType = DialogsMSTPType & DialogsMDTPType
 
 const mapStateToProps = (state: AppStateType): DialogsMSTPType => {
   return {
-    state: state.dialogsPage
+    state: state.dialogsPage,
+    isAuth: state.auth.isAuth
   }
 }
 

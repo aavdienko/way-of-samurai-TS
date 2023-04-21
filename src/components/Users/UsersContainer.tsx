@@ -6,7 +6,6 @@ import {
   followThunkCreator,
   getNewUsersPageTC,
   getUsersThunkCreator,
-  InitialStateType,
   unFollow,
   unFollowThunkCreator,
   UserType,
@@ -15,17 +14,20 @@ import React from 'react';
 import { Users } from './Users';
 import { Preloader } from '../../common/preloader/Preloader';
 
-
+type InitialStateType = {
+  users: Array<UserType>;
+  pageSize: number;
+  totalUsersCount: number;
+  currentPage: number;
+  isFetching: boolean;
+  followRequest: Array<number>;
+  isAuth: boolean
+};
 
 type UsersMSTPType = InitialStateType;
 type UsersMDTPType = {
   follow: (userId: number) => void;
   unFollow: (userId: number) => void;
-  // setUsers: (users: Array<UserType>) => void;
-  // setCurrentPage: (currentPage: number) => void;
-  // setTotalCount: (totalUsersCount: number) => void;
-  // changeIsFetching: (isFetching: boolean) => void;
-  // changeFollowRequest: (followRequest: boolean, userId: number ) => void
   getUsersThunkCreator: (currentPage: number, pageSize: number) => void
   followThunkCreator: (userId: number) => void
   unFollowThunkCreator: (userId: number) => void
@@ -75,6 +77,7 @@ export class UsersClass extends React.Component<UsersPropsType> {
           followRequest={this.props.followRequest}
           followThunkCreator={this.props.followThunkCreator}
           unFollowThunkCreator={this.props.unFollowThunkCreator}
+          isAuth={this.props.isAuth}
         />}
       </div>
     );
@@ -135,6 +138,7 @@ const mapStateToProps = (state: AppStateType): UsersMSTPType => {
     currentPage: state.usersPage.currentPage,
     isFetching: state.usersPage.isFetching,
     followRequest: state.usersPage.followRequest,
+    isAuth: state.auth.isAuth
   };
 };
 

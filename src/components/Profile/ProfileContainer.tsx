@@ -8,6 +8,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 
 type ProfileMSTPType = {
   profile: ProfileType | null
+  isAuth: boolean
 };
 type ProfileMDTPType = {
   getUserProfileThunkCreator: (userId: string) => void
@@ -43,7 +44,8 @@ class ProfileContainerClass extends React.Component<OwnPropsType> {
 
 const mapStateToProps = (state: AppStateType): ProfileMSTPType => {
   return {
-    profile: state.profilePage.profile
+    profile: state.profilePage.profile,
+    isAuth: state.auth.isAuth
   }
 }
 

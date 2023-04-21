@@ -6,6 +6,7 @@ import Navbar from './components/Navbar/Navbar';
 import { UsersContainer } from './components/Users/UsersContainer';
 import { ProfileContainer } from './components/Profile/ProfileContainer';
 import { HeaderContainer, HeaderContainerClass } from './components/Header/HeaderContainer';
+import { Login } from './components/Login/Login';
 
 
 // export type AppPropsType = {
@@ -36,6 +37,12 @@ const App = () => {
             path="/users"
             render={() => (
               <UsersContainer/>
+            )}
+          />
+          <Route
+            path="/login"
+            render={() => (
+              <Login/>
             )}
           />
           {/* <Route path='/news' render={() => <Profile posts={props.posts}/>} />
