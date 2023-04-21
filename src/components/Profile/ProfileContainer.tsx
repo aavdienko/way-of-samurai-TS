@@ -1,9 +1,8 @@
 import React from 'react';
 import Profile from './Profile';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux/redux-store';
-import { InitialStateType, ProfileType, setUserProfile } from '../../redux/profile-reducer';
+import { InitialStateType, ProfileType, getUserProfileThunkCreator } from '../../redux/profile-reducer';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 
@@ -11,7 +10,7 @@ type ProfileMSTPType = {
   profile: ProfileType | null
 };
 type ProfileMDTPType = {
-  setUserProfile: (profile: ProfileType) => void
+  getUserProfileThunkCreator: (userId: string) => void
 }
 
 type PathParamsType = {
@@ -29,14 +28,7 @@ class ProfileContainerClass extends React.Component<OwnPropsType> {
     if(!userId) {
       userId = '2'
     }
-
-    axios
-      .get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
-      .then((response) => {
-
-        console.log(response)
-        this.props.setUserProfile(response.data);
-      });
+    this.props.getUserProfileThunkCreator(userId)
   }
 
   render() {
@@ -57,4 +49,4 @@ const mapStateToProps = (state: AppStateType): ProfileMSTPType => {
 
 const WithUrlDataProfileContainer = withRouter(ProfileContainerClass) // забираем userID из URL с помощью withRouter котрый создает контерйнерную компоненту для этого
 
-export const ProfileContainer = connect(mapStateToProps, {setUserProfile})(WithUrlDataProfileContainer)
+export const ProfileContainer = connect(mapStateToProps, {getUserProfileThunkCreator})(WithUrlDataProfileContainer)

@@ -1,3 +1,6 @@
+import { Dispatch } from 'redux';
+import { usersAPI } from '../api/api';
+
 export const ADD_POST = 'ADD-POST';
 export const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 export const SET_USER_PROFILE = 'SET-USER-PROFILE';
@@ -104,3 +107,13 @@ export const setUserProfile = (profile: ProfileType) => {
     payload: { profile }
   } as const;
 };
+
+export const getUserProfileThunkCreator = (userId: string) => {
+  return (dispatch: Dispatch) => {
+    usersAPI.getProfile(userId)
+    .then((response) => {
+      dispatch(setUserProfile(response.data))
+    });
+  };
+};
+

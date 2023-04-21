@@ -1,3 +1,5 @@
+import { Dispatch } from "redux";
+import { authAPI } from "../api/api";
 
 export const SET_USER_DATA = 'SET-USER-DATA';
 
@@ -47,4 +49,15 @@ export const setUserData = (data: DataType) => {
     type: SET_USER_DATA,
     payload: { data }
   } as const;
+};
+
+export const getAuthUserDataThunkCreator = () => {
+  return (dispatch: Dispatch) => {
+    authAPI.me()
+    .then((response) => {
+      if(response.data.resultCode === 0){
+        dispatch(setUserData(response.data.data))
+      }
+    }
+  )};
 };

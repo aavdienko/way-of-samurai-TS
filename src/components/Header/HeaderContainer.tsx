@@ -3,8 +3,7 @@ import axios from 'axios';
 import Header from './Header';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux/redux-store';
-import { DataType, setUserData } from '../../redux/auth-reducer';
-import { log } from 'console';
+import { getAuthUserDataThunkCreator } from '../../redux/auth-reducer';
 
 type HeaderMSTPType = {
   isAuth: boolean
@@ -12,23 +11,21 @@ type HeaderMSTPType = {
 }
 
 type HeaderMDTPType = {
-  setUserData: (data: DataType) => void
+  getAuthUserDataThunkCreator: () => void
 }
 
 export type HeaderPropsType = HeaderMSTPType & HeaderMDTPType
 
 export class HeaderContainerClass extends React.Component<HeaderPropsType> {
   componentDidMount(): void {
-    axios
-      .get(`https://social-network.samuraijs.com/api/1.0/auth/me`, {
-        withCredentials: true
-      })
-      .then((response) => {
-        if(response.data.resultCode === 0){
-          this.props.setUserData(response.data.data);
-        }
+    this.props.getAuthUserDataThunkCreator()
+    // authAPI.me()
+    //   .then((response) => {
+    //     if(response.data.resultCode === 0){
+    //       this.props.setUserData(response.data.data);
+    //     }
+    //   });
 
-      });
   }
 
   render (){
@@ -47,4 +44,4 @@ const mapStateToProps = (state: AppStateType): HeaderMSTPType => {
   }
 }
 
-export const HeaderContainer = connect(mapStateToProps, {setUserData})(HeaderContainerClass)
+export const HeaderContainer = connect(mapStateToProps, {getAuthUserDataThunkCreator})(HeaderContainerClass)
