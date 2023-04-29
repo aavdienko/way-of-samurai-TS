@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { compose, Dispatch } from 'redux';
 import { AppStateType } from '../../redux/redux-store';
 import {
   follow,
@@ -10,9 +10,10 @@ import {
   unFollowThunkCreator,
   UserType,
 } from '../../redux/users-reducer';
-import React from 'react';
+import React, { ComponentType } from 'react';
 import { Users } from './Users';
 import { Preloader } from '../../common/preloader/Preloader';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 type InitialStateType = {
   users: Array<UserType>;
@@ -21,7 +22,6 @@ type InitialStateType = {
   currentPage: number;
   isFetching: boolean;
   followRequest: Array<number>;
-  isAuth: boolean
 };
 
 type UsersMSTPType = InitialStateType;
@@ -77,7 +77,6 @@ export class UsersClass extends React.Component<UsersPropsType> {
           followRequest={this.props.followRequest}
           followThunkCreator={this.props.followThunkCreator}
           unFollowThunkCreator={this.props.unFollowThunkCreator}
-          isAuth={this.props.isAuth}
         />}
       </div>
     );
@@ -138,7 +137,7 @@ const mapStateToProps = (state: AppStateType): UsersMSTPType => {
     currentPage: state.usersPage.currentPage,
     isFetching: state.usersPage.isFetching,
     followRequest: state.usersPage.followRequest,
-    isAuth: state.auth.isAuth
+
   };
 };
 
@@ -166,6 +165,12 @@ const mapStateToProps = (state: AppStateType): UsersMSTPType => {
 //   };
 // };
 
-export const UsersContainer = connect(
-  mapStateToProps, {follow, unFollow, getUsersThunkCreator, getNewUsersPageTC, followThunkCreator, unFollowThunkCreator}
-)(UsersClass);
+// export const UsersContainer = withAuthRedirect(connect(
+//   mapStateToProps, {follow, unFollow, getUsersThunkCreator, getNewUsersPageTC, followThunkCreator, unFollowThunkCreator}
+// )(UsersClass));
+
+export const UsersContainer = compose<ComponentType>(
+  connect(
+    mapStateToProps, {follow, unFollow, getUsersThunkCreator, getNewUsersPageTC, followThunkCreator, unFollowThunkCreator}
+  ),
+  withAuthRedirect)(UsersClass)

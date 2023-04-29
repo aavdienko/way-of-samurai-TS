@@ -12,9 +12,6 @@ import { ProfileInfo } from './ProfileInfo/ProfileInfo';
 
 const Profile = (props: ProfilePropsType) => {
 
-  if(!props.isAuth){
-    return <Redirect to={'/login'}/>
-  }
 
   return (
     <div>

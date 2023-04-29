@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { ComponentType } from 'react';
 import Profile from './Profile';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux/redux-store';
 import { InitialStateType, ProfileType, getUserProfileThunkCreator } from '../../redux/profile-reducer';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
+import { compose } from 'redux';
 
 
 type ProfileMSTPType = {
   profile: ProfileType | null
-  isAuth: boolean
 };
 type ProfileMDTPType = {
   getUserProfileThunkCreator: (userId: string) => void
@@ -45,10 +46,15 @@ class ProfileContainerClass extends React.Component<OwnPropsType> {
 const mapStateToProps = (state: AppStateType): ProfileMSTPType => {
   return {
     profile: state.profilePage.profile,
-    isAuth: state.auth.isAuth
   }
 }
 
 const WithUrlDataProfileContainer = withRouter(ProfileContainerClass) // забираем userID из URL с помощью withRouter котрый создает контерйнерную компоненту для этого
 
-export const ProfileContainer = connect(mapStateToProps, {getUserProfileThunkCreator})(WithUrlDataProfileContainer)
+// export const ProfileContainer = withAuthRedirect(connect(mapStateToProps, {getUserProfileThunkCreator})(WithUrlDataProfileContainer))
+
+export const ProfileContainer = compose<ComponentType>(
+  connect(mapStateToProps, {getUserProfileThunkCreator}), 
+  withRouter, 
+  withAuthRedirect)(ProfileContainerClass)
+

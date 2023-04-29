@@ -14,16 +14,15 @@ type UserPropsType = {
   followRequest: Array<number>,
   followThunkCreator: (userId: number) => void
   unFollowThunkCreator: (userId: number) => void
-  isAuth: boolean
 };
 
 export const Users = (props: UserPropsType) => {
   const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
   const pages = [];
 
-  if(!props.isAuth){
-    return <Redirect to={'/login'}/>
-  }
+  // if(!props.isAuth){
+  //   return <Redirect to={'/login'}/>
+  // }
 
   for (let i = 1; i <= pagesCount; i++) {
     pages.push(i);
