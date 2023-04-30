@@ -7,6 +7,8 @@ import ProfileStatus from './ProfileStatus';
 
 type ProfileInfoPropsType = {
   profile: ProfileType | null
+  status: string
+  updateUserStatusThunkCreator: (status: string) => void
 };
 
 export const ProfileInfo = (props: ProfileInfoPropsType) => {
@@ -22,7 +24,7 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
       </div> */}
       <div className={styles.descriptionBlock}>
         <img src={props.profile.photos.large} />
-        <ProfileStatus status={'Hello'}/>
+        <ProfileStatus status={props.status} updateUserStatusThunkCreator={props.updateUserStatusThunkCreator}/>
         ava+discription
       </div>
       <h3>{props.profile.fullName}</h3>

@@ -2,7 +2,7 @@ import React, { ComponentType } from 'react';
 import Profile from './Profile';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux/redux-store';
-import { InitialStateType, ProfileType, getUserProfileThunkCreator } from '../../redux/profile-reducer';
+import { InitialStateType, ProfileType, getUserProfileThunkCreator, getUserStatusThunkCreator, updateUserStatusThunkCreator } from '../../redux/profile-reducer';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 import { compose } from 'redux';
@@ -10,9 +10,12 @@ import { compose } from 'redux';
 
 type ProfileMSTPType = {
   profile: ProfileType | null
+  status: string
 };
 type ProfileMDTPType = {
   getUserProfileThunkCreator: (userId: string) => void
+  getUserStatusThunkCreator: (userId: string) => void
+  updateUserStatusThunkCreator: (status: string) => void
 }
 
 type PathParamsType = {
@@ -31,13 +34,14 @@ class ProfileContainerClass extends React.Component<OwnPropsType> {
       userId = '2'
     }
     this.props.getUserProfileThunkCreator(userId)
+    this.props.getUserStatusThunkCreator(userId)
   }
 
   render() {
 
     return (
       <div>
-        <Profile {...this.props} profile={this.props.profile}/>
+        <Profile {...this.props} profile={this.props.profile} status={this.props.status} updateUserStatusThunkCreator={this.props.updateUserStatusThunkCreator}/>
       </div>
     );
   }
@@ -46,6 +50,7 @@ class ProfileContainerClass extends React.Component<OwnPropsType> {
 const mapStateToProps = (state: AppStateType): ProfileMSTPType => {
   return {
     profile: state.profilePage.profile,
+    status: state.profilePage.status
   }
 }
 
@@ -54,7 +59,7 @@ const WithUrlDataProfileContainer = withRouter(ProfileContainerClass) // заб�
 // export const ProfileContainer = withAuthRedirect(connect(mapStateToProps, {getUserProfileThunkCreator})(WithUrlDataProfileContainer))
 
 export const ProfileContainer = compose<ComponentType>(
-  connect(mapStateToProps, {getUserProfileThunkCreator}), 
+  connect(mapStateToProps, {getUserProfileThunkCreator, getUserStatusThunkCreator, updateUserStatusThunkCreator}), 
   withRouter, 
   withAuthRedirect)(ProfileContainerClass)
 

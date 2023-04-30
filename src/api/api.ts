@@ -43,8 +43,8 @@ export const usersAPI = {
     })
   },
   getProfile(userId: string){
-   return axiosInstance
-   .get(`profile/${userId}`)
+    console.warn('old method, please use profileAPI')
+   return profileAPI.getProfile(userId)
   }
 }
 
@@ -55,3 +55,17 @@ export const authAPI = {
   }
 }
 
+export const profileAPI = {
+  getProfile(userId: string){
+   return axiosInstance
+   .get(`profile/${userId}`)
+  },
+  getStatus(userId: string){
+    return axiosInstance
+    .get(`profile/status/${userId}`)
+   },
+   updateStatus(status: string){
+    return axiosInstance
+    .put(`profile/status`,{status})
+   },
+}

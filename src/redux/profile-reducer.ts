@@ -1,15 +1,18 @@
 import { Dispatch } from 'redux';
-import { usersAPI } from '../api/api';
+import { profileAPI, usersAPI } from '../api/api';
 
 export const ADD_POST = 'ADD-POST';
 export const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 export const SET_USER_PROFILE = 'SET-USER-PROFILE';
+export const SET_USER_STATUS = 'SET-USER-STATUS';
 
 type addPostACType = ReturnType<typeof addPostAC>;
 type updateNewPostTextACType = ReturnType<typeof updateNewPostTextAC>;
 type setUserProfileType = ReturnType<typeof setUserProfile>
+type getUserStatusType = ReturnType<typeof setUserStatus>
 
-export type ProfileMainActionType = addPostACType | updateNewPostTextACType | setUserProfileType
+
+export type ProfileMainActionType = addPostACType | updateNewPostTextACType | setUserProfileType | getUserStatusType
 
 type PostsType = {
   id: number;
@@ -44,7 +47,8 @@ type ProfileContactsType = {
 export type InitialStateType = {
   newPostText: string;
   posts: Array<PostsType>;
-  profile: ProfileType | null
+  profile: ProfileType | null,
+  status: string
 };
 
 // Создали начальный стейт чтобы избжеать ощибок в начальной отрисовке
@@ -54,7 +58,8 @@ const initialState: InitialStateType = {
     { id: 2, message: 'It is my first post', likesCount: 30 },
   ],
   newPostText: 'New Post placeholder',
-  profile: null
+  profile: null,
+  status: ''
   }
 
 export const profileReducer = (state: InitialStateType = initialState, action: ProfileMainActionType): InitialStateType => {
@@ -83,6 +88,12 @@ export const profileReducer = (state: InitialStateType = initialState, action: P
         profile: action.payload.profile
       }
     }
+    case SET_USER_STATUS: {
+      return {
+        ...state,
+        status: action.payload.status
+      }
+    }
     default:
       return state;
   }
@@ -108,11 +119,43 @@ export const setUserProfile = (profile: ProfileType) => {
   } as const;
 };
 
+export const setUserStatus = (status: string) => {
+  return {
+    type: SET_USER_STATUS,
+    payload: { status }
+  } as const;
+};
+
+
+
+//----------Thunk Creators----------------//
+
 export const getUserProfileThunkCreator = (userId: string) => {
   return (dispatch: Dispatch) => {
     usersAPI.getProfile(userId)
     .then((response) => {
       dispatch(setUserProfile(response.data))
+    });
+  };
+};
+
+export const getUserStatusThunkCreator = (userId: string) => {
+  return (dispatch: Dispatch) => {
+    profileAPI.getStatus(userId)
+    .then((response) => {
+      dispatch(setUserStatus(response.data))
+    });
+  };
+};
+
+
+export const updateUserStatusThunkCreator = (status: string) => {
+  return (dispatch: Dispatch) => {
+    profileAPI.updateStatus(status)
+    .then((response) => {
+      if(response.data.resultCode === 0){
+      dispatch(setUserStatus(status))
+      }
     });
   };
 };
