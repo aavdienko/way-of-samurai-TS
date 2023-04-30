@@ -1,3 +1,4 @@
+import { log } from "console";
 import React, { ChangeEvent } from "react";
 
 
@@ -19,9 +20,9 @@ class ProfileStatus extends React.Component<ProfileStatusPropsType>{
     })
     if(this.state.editMode){
       this.props.updateUserStatusThunkCreator(this.state.status)
-      this.setState({
-        status: ''
-      })
+      // this.setState({
+      //   status: ''
+      // })
     }
   }
 
@@ -32,6 +33,13 @@ class ProfileStatus extends React.Component<ProfileStatusPropsType>{
     })
   }
 
+  componentDidUpdate(prevProps: Readonly<ProfileStatusPropsType>, prevState: Readonly<{}>, snapshot?: any): void {
+    if (prevProps.status !== this.props.status){
+      this.setState({
+        status: this.props.status
+      })
+    }
+  }
 
   render() {
     return (
