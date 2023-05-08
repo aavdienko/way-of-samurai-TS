@@ -1,11 +1,7 @@
-
-
 export const ADD_MESSAGE = 'ADD-MESSAGE';
-export const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
 
 type addMessageACType = ReturnType<typeof addMessageAC>;
-type updateNewMessageTextAC = ReturnType<typeof updateNewMessageTextAC>;
-export type DialogsMainActionType = addMessageACType | updateNewMessageTextAC;
+export type DialogsMainActionType = addMessageACType
 
 type MessagesType = {
   id: number;
@@ -19,7 +15,6 @@ type DialogsType = {
 export type InitialStateType = {
   dialogs: Array<DialogsType>;
   messages: Array<MessagesType>;
-  newMessageText: string;
 };
 
 const initialState: InitialStateType = {
@@ -34,8 +29,7 @@ const initialState: InitialStateType = {
     { id: 2, message: 'How are you?' },
     { id: 3, message: 'I am Crosby!' },
     { id: 4, message: 'Yo!' },
-  ],
-  newMessageText: 'New Message placeholder',
+  ]
 }
 
 export const dialogsReducer = (state: InitialStateType = initialState, action: DialogsMainActionType): InitialStateType => {
@@ -44,19 +38,11 @@ export const dialogsReducer = (state: InitialStateType = initialState, action: D
     case ADD_MESSAGE: {
       const newMessage: MessagesType = {
         id: 5,
-        message: state.newMessageText,
+        message: action.payload.newMessageBody,
       };
       return {
         ...state,
         messages: [...state.messages, newMessage],
-        newMessageText: ''
-      }
-
-    }
-    case UPDATE_NEW_MESSAGE_TEXT: {
-      return {
-        ...state,
-        newMessageText: action.payload.newMessageText
       }
     }
     default:
@@ -64,15 +50,9 @@ export const dialogsReducer = (state: InitialStateType = initialState, action: D
   }
 };
 
-export const addMessageAC = () => {
+export const addMessageAC = (newMessageBody: string) => {
   return {
     type: ADD_MESSAGE,
-  } as const;
-};
-
-export const updateNewMessageTextAC = (newMessageText: string) => {
-  return {
-    type: UPDATE_NEW_MESSAGE_TEXT,
-    payload: { newMessageText },
+    payload: { newMessageBody },
   } as const;
 };

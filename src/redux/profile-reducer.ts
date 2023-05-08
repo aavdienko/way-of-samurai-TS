@@ -2,17 +2,15 @@ import { Dispatch } from 'redux';
 import { profileAPI, usersAPI } from '../api/api';
 
 export const ADD_POST = 'ADD-POST';
-export const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 export const SET_USER_PROFILE = 'SET-USER-PROFILE';
 export const SET_USER_STATUS = 'SET-USER-STATUS';
 
 type addPostACType = ReturnType<typeof addPostAC>;
-type updateNewPostTextACType = ReturnType<typeof updateNewPostTextAC>;
 type setUserProfileType = ReturnType<typeof setUserProfile>
 type getUserStatusType = ReturnType<typeof setUserStatus>
 
 
-export type ProfileMainActionType = addPostACType | updateNewPostTextACType | setUserProfileType | getUserStatusType
+export type ProfileMainActionType = addPostACType | setUserProfileType | getUserStatusType
 
 type PostsType = {
   id: number;
@@ -45,7 +43,6 @@ type ProfileContactsType = {
 }
 
 export type InitialStateType = {
-  newPostText: string;
   posts: Array<PostsType>;
   profile: ProfileType | null,
   status: string
@@ -57,7 +54,6 @@ const initialState: InitialStateType = {
     { id: 1, message: 'Hi how are you?', likesCount: 20 },
     { id: 2, message: 'It is my first post', likesCount: 30 },
   ],
-  newPostText: 'New Post placeholder',
   profile: null,
   status: ''
   }
@@ -67,19 +63,12 @@ export const profileReducer = (state: InitialStateType = initialState, action: P
     case ADD_POST: {
       const newPost: PostsType = {
         id: 3,
-        message: state.newPostText,
+        message: action.payload.newPostBody,
         likesCount: 0,
       };
       return {
         ...state,
         posts: [newPost, ...state.posts],
-        newPostText: ''
-      }
-    }
-    case UPDATE_NEW_POST_TEXT: {
-      return {
-        ...state,
-        newPostText: action.payload.newText
       }
     }
     case SET_USER_PROFILE: {
@@ -99,18 +88,19 @@ export const profileReducer = (state: InitialStateType = initialState, action: P
   }
 };
 
-export const addPostAC = () => {
+export const addPostAC = (newPostBody: string) => {
   return {
-    type: ADD_POST
+    type: ADD_POST,
+    payload: { newPostBody }
   } as const;
 };
 
-export const updateNewPostTextAC = (newText: string) => {
-  return {
-    type: UPDATE_NEW_POST_TEXT,
-    payload: { newText }
-  } as const;
-};
+// export const updateNewPostTextAC = (newText: string) => {
+//   return {
+//     type: UPDATE_NEW_POST_TEXT,
+//     payload: { newText }
+//   } as const;
+// };
 
 export const setUserProfile = (profile: ProfileType) => {
   return {

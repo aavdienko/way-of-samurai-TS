@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { addPostAC, InitialStateType, updateNewPostTextAC } from '../../../redux/profile-reducer';
+import { addPostAC, InitialStateType } from '../../../redux/profile-reducer';
 import { AppStateType } from '../../../redux/redux-store';
 
 import MyPosts from './MyPosts';
@@ -35,8 +35,7 @@ import MyPosts from './MyPosts';
 type MyPostsMSTPType = InitialStateType
 
 type MyPostsMDTPType = {
-  updateNewPostText: (newText: string) => void
-  addPost: () => void
+  addPost: (newPostBody: string) => void
 }
 
 export type MyPostsPropsType = MyPostsMSTPType & MyPostsMDTPType
@@ -44,7 +43,6 @@ export type MyPostsPropsType = MyPostsMSTPType & MyPostsMDTPType
 const mapStateToProps = (state: AppStateType): MyPostsMSTPType => {
   return {
     posts: state.profilePage.posts,
-    newPostText: state.profilePage.newPostText,
     profile: state.profilePage.profile,
     status: state.profilePage.status
   }
@@ -52,11 +50,8 @@ const mapStateToProps = (state: AppStateType): MyPostsMSTPType => {
 
 const mapDispatchToProps = (dispatch: Dispatch): MyPostsMDTPType => {
   return {
-    updateNewPostText: (newText: string) => {
-      dispatch(updateNewPostTextAC(newText))
-    },
-    addPost: () => {
-      dispatch(addPostAC())
+    addPost: (newPostBody: string) => {
+      dispatch(addPostAC(newPostBody))
     }
   }
 }

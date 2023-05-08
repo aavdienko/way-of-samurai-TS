@@ -1,7 +1,6 @@
 import {
   addMessageAC,
   InitialStateType,
-  updateNewMessageTextAC,
 } from '../../redux/dialogs-reducer';
 import { Dialogs } from './Dialogs';
 import { connect } from 'react-redux';
@@ -20,8 +19,7 @@ type DialogsMSTPType = {
 }
 
 type DialogsMDTPType = {
-  addMessageHandler: () => void
-  onMessageChangeHandler: (newMessageText: string) => void
+  addMessageHandler: (title: string) => void
 }
 
 export type DialogsPropsType = DialogsMSTPType & DialogsMDTPType
@@ -34,8 +32,7 @@ const mapStateToProps = (state: AppStateType): DialogsMSTPType => {
 
 const mapDispatchToProps = (dispatch: Dispatch): DialogsMDTPType => {
   return {
-    addMessageHandler: () => dispatch(addMessageAC()),
-    onMessageChangeHandler:(newMessageText: string) => dispatch(updateNewMessageTextAC(newMessageText))
+    addMessageHandler: (newMessageBody: string ) => dispatch(addMessageAC(newMessageBody)),
   }
 }
 // export const DialogsContainer = withAuthRedirect(connect(mapStateToProps, mapDispatchToProps)(Dialogs))
