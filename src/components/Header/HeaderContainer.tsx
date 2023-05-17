@@ -3,7 +3,7 @@ import axios from 'axios';
 import Header from './Header';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux/redux-store';
-import { getAuthUserDataThunkCreator } from '../../redux/auth-reducer';
+import { getAuthUserDataThunkCreator, logoutThunkCreator } from '../../redux/auth-reducer';
 
 type HeaderMSTPType = {
   isAuth: boolean
@@ -12,6 +12,7 @@ type HeaderMSTPType = {
 
 type HeaderMDTPType = {
   getAuthUserDataThunkCreator: () => void
+  logoutThunkCreator: () => void
 }
 
 export type HeaderPropsType = HeaderMSTPType & HeaderMDTPType
@@ -44,4 +45,4 @@ const mapStateToProps = (state: AppStateType): HeaderMSTPType => {
   }
 }
 
-export const HeaderContainer = connect(mapStateToProps, {getAuthUserDataThunkCreator})(HeaderContainerClass)
+export const HeaderContainer = connect(mapStateToProps, {getAuthUserDataThunkCreator, logoutThunkCreator})(HeaderContainerClass)
