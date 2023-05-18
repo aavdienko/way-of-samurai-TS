@@ -56,8 +56,7 @@ export const setUserData = (data: DataType, isAuth: boolean) => {
 
 export const getAuthUserDataThunkCreator = () => {
   return (dispatch: Dispatch) => {
-
-    authAPI.me()
+    return authAPI.me()
     .then((response) => {
       if(response.data.resultCode === 0){
         dispatch(setUserData(response.data.data, true))

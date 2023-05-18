@@ -11,23 +11,23 @@ type HeaderMSTPType = {
 }
 
 type HeaderMDTPType = {
-  getAuthUserDataThunkCreator: () => void
+  // getAuthUserDataThunkCreator: () => void
   logoutThunkCreator: () => void
 }
 
 export type HeaderPropsType = HeaderMSTPType & HeaderMDTPType
 
 export class HeaderContainerClass extends React.Component<HeaderPropsType> {
-  componentDidMount(): void {
-    this.props.getAuthUserDataThunkCreator()
-    // authAPI.me()
-    //   .then((response) => {
-    //     if(response.data.resultCode === 0){
-    //       this.props.setUserData(response.data.data);
-    //     }
-    //   });
+  // componentDidMount(): void {
+  //   this.props.getAuthUserDataThunkCreator()
+  //   // authAPI.me()
+  //   //   .then((response) => {
+  //   //     if(response.data.resultCode === 0){
+  //   //       this.props.setUserData(response.data.data);
+  //   //     }
+  //   //   });
 
-  }
+  // }
 
   render (){
     return (
@@ -45,4 +45,4 @@ const mapStateToProps = (state: AppStateType): HeaderMSTPType => {
   }
 }
 
-export const HeaderContainer = connect(mapStateToProps, {getAuthUserDataThunkCreator, logoutThunkCreator})(HeaderContainerClass)
+export const HeaderContainer = connect(mapStateToProps, {logoutThunkCreator})(HeaderContainerClass)

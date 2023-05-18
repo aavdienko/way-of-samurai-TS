@@ -5,6 +5,7 @@ import { applyMiddleware, combineReducers, createStore } from "redux";
 import { usersReducer } from './users-reducer';
 import thunkMiddleWare, { ThunkAction } from 'redux-thunk'
 import { reducer as formReducer } from 'redux-form';
+import { AppMainActionType, appReducer } from './app-reducer';
 
 // соеденяем все редьюсеры в один с помощью combine reducer
 
@@ -16,6 +17,7 @@ const RootReducer = combineReducers({
   usersPage: usersReducer,
   auth: authReducer,
   form: formReducer,
+  app: appReducer,
 })
 
 
@@ -24,7 +26,7 @@ export const store = createStore(RootReducer, applyMiddleware(thunkMiddleWare))
 // @ts-ignore
 window.store = store;
 
-export type AppActionsType = ProfileMainActionType | DialogsMainActionType | AuthMainActionType | AuthMainActionType
+export type AppActionsType = ProfileMainActionType | DialogsMainActionType | AuthMainActionType | AppMainActionType
 
 // тип для диспатча санки в санке
 

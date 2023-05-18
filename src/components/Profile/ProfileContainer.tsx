@@ -11,6 +11,8 @@ import { compose } from 'redux';
 type ProfileMSTPType = {
   profile: ProfileType | null
   status: string
+  authorizedUserId: number | null
+  isAuth: boolean
 };
 type ProfileMDTPType = {
   getUserProfileThunkCreator: (userId: string) => void
@@ -27,6 +29,8 @@ type OwnPropsType = RouteComponentProps<PathParamsType> & ProfilePropsType
 export type ProfilePropsType = ProfileMSTPType & ProfileMDTPType;
 
 class ProfileContainerClass extends React.Component<OwnPropsType> {
+
+  // userId = должены быть равен this.props.authorizedUserId, но не могу добавить из за конфилкта в типах число / строка
 
   componentDidMount(): void {
     let userId = this.props.match.params.userId
@@ -50,7 +54,9 @@ class ProfileContainerClass extends React.Component<OwnPropsType> {
 const mapStateToProps = (state: AppStateType): ProfileMSTPType => {
   return {
     profile: state.profilePage.profile,
-    status: state.profilePage.status
+    status: state.profilePage.status,
+    authorizedUserId: state.auth.id,
+    isAuth: state.auth.isAuth
   }
 }
 
