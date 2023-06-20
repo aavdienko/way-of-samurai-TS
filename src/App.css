@@ -41,18 +41,18 @@ ul li {
   grid-template-areas: 'h h' 'n c';
   grid-template-rows: 60px 1fr;
   grid-template-columns: 2fr 10fr;
-  /* font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
   min-height: 1080px;
   margin: 0 10px 0 10px;
   background-color: #e1e8ed ;
-  display: grid;
+  /* display: grid;
   grid-template-rows: 100px 1fr 100px;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 1fr 4fr; */
   gap: 15px;
-  border: solid 2px black; */
+  border: solid 2px black;
 }
 
 .app-wraper-content {

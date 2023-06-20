@@ -14,6 +14,7 @@ import React, { ComponentType } from 'react';
 import { Users } from './Users';
 import { Preloader } from '../../common/preloader/Preloader';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
+import { getCurrentPageSelector, getFollowRequestSelector, getIsFetchingSelector, getPageSizeSelector, getTotalUsersCountSelector, getUsersSelector } from '../../redux/users-selectors';
 
 type InitialStateType = {
   users: Array<UserType>;
@@ -129,17 +130,28 @@ export class UsersClass extends React.Component<UsersPropsType> {
   }
 }
 
+
 const mapStateToProps = (state: AppStateType): UsersMSTPType => {
   return {
-    users: state.usersPage.users,
-    pageSize: state.usersPage.pageSize,
-    totalUsersCount: state.usersPage.totalUsersCount,
-    currentPage: state.usersPage.currentPage,
-    isFetching: state.usersPage.isFetching,
-    followRequest: state.usersPage.followRequest,
-
+    users: getUsersSelector(state),
+    pageSize: getPageSizeSelector(state),
+    totalUsersCount: getTotalUsersCountSelector(state),
+    currentPage: getCurrentPageSelector(state),
+    isFetching: getIsFetchingSelector(state),
+    followRequest: getFollowRequestSelector(state),
   };
 };
+
+// const mapStateToProps = (state: AppStateType): UsersMSTPType => {
+//   return {
+//     users: state.usersPage.users,
+//     pageSize: state.usersPage.pageSize,
+//     totalUsersCount: state.usersPage.totalUsersCount,
+//     currentPage: state.usersPage.currentPage,
+//     isFetching: state.usersPage.isFetching,
+//     followRequest: state.usersPage.followRequest,
+//   };
+// };
 
 // переписаль MDTP на короткую запись, в которой мы просто передаем колбэки -  actioncreators.
 // const mapDispatchToProps = (dispatch: Dispatch): UsersMDTPType => {
