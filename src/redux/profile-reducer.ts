@@ -2,15 +2,18 @@ import { Dispatch } from 'redux';
 import { profileAPI, usersAPI } from '../api/api';
 
 export const ADD_POST = 'ADD-POST';
+export const DELETE_POST = 'DELETE-POST';
 export const SET_USER_PROFILE = 'SET-USER-PROFILE';
 export const SET_USER_STATUS = 'SET-USER-STATUS';
 
 type addPostACType = ReturnType<typeof addPostAC>;
+type deletePostACType = ReturnType<typeof deletePostAC>;
 type setUserProfileType = ReturnType<typeof setUserProfile>
 type getUserStatusType = ReturnType<typeof setUserStatus>
 
 
-export type ProfileMainActionType = addPostACType | setUserProfileType | getUserStatusType
+
+export type ProfileMainActionType = addPostACType | setUserProfileType | getUserStatusType | deletePostACType
 
 type PostsType = {
   id: number;
@@ -71,6 +74,12 @@ export const profileReducer = (state: InitialStateType = initialState, action: P
         posts: [newPost, ...state.posts],
       }
     }
+    case DELETE_POST: {
+      return {
+        ...state,
+        posts: state.posts.filter(p => p.id !== action.payload.postId)
+      }
+    }
     case SET_USER_PROFILE: {
       return {
         ...state,
@@ -116,6 +125,12 @@ export const setUserStatus = (status: string) => {
   } as const;
 };
 
+export const deletePostAC = (postId: number) => {
+  return {
+    type: DELETE_POST,
+    payload: { postId }
+  } as const;
+};
 
 
 //----------Thunk Creators----------------//
