@@ -2,13 +2,13 @@ import { Dispatch } from 'redux';
 import { UserPhotoUrl } from '../assets/photoUrls';
 import { usersAPI } from '../api/api';
 
-const FOLLOW = 'FOLLOW';
-const UNFOLLOW = 'UNFOLLOW';
-const SET_USERS = 'SET_USERS';
-const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
-const SET_TOTAL_COUNT = 'SET_TOTAL_COUN';
-const CHANGE_IS_FETCHING = 'CHANGE_IS_FETCHING';
-const CHANGE_FOLLOW_REQUEST = 'CHANGE_FOLLOW_REQUEST';
+const FOLLOW = 'users/FOLLOW';
+const UNFOLLOW = 'users/UNFOLLOW';
+const SET_USERS = 'users/SET_USERS';
+const SET_CURRENT_PAGE = 'users/SET_CURRENT_PAGE';
+const SET_TOTAL_COUNT = 'users/SET_TOTAL_COUN';
+const CHANGE_IS_FETCHING = 'users/CHANGE_IS_FETCHING';
+const CHANGE_FOLLOW_REQUEST = 'users/CHANGE_FOLLOW_REQUEST';
 
 export type InitialStateType = {
   users: Array<UserType>;
@@ -64,6 +64,7 @@ type changeIsFetchingACType = ReturnType<typeof changeIsFetching>;
 
 type changeFollowRequestACType = ReturnType<typeof changeFollowRequest>;
 
+
 type UsersMainActionType =
   | setUsersACType
   | FollowACType
@@ -82,17 +83,12 @@ const initialState: InitialStateType = {
   followRequest: [],
 };
 
-export const usersReducer = (
-  state = initialState,
-  action: UsersMainActionType
-): InitialStateType => {
+export const usersReducer = (state = initialState, action: UsersMainActionType): InitialStateType => {
   switch (action.type) {
     case FOLLOW: {
       const stateCopy = {
         ...state,
-        users: state.users.map((user) =>
-          user.id === action.payload.id ? { ...user, followed: true } : user
-        ),
+        users: state.users.map((user) => (user.id === action.payload.id ? { ...user, followed: true } : user)),
       };
       return stateCopy;
     }
@@ -100,9 +96,7 @@ export const usersReducer = (
     case UNFOLLOW: {
       const stateCopy = {
         ...state,
-        users: state.users.map((user) =>
-          user.id === action.payload.id ? { ...user, followed: false } : user
-        ),
+        users: state.users.map((user) => (user.id === action.payload.id ? { ...user, followed: false } : user)),
       };
       return stateCopy;
     }
@@ -214,47 +208,58 @@ export const changeFollowRequest = (followRequest: boolean, userId: number) => {
 };
 
 export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
-  return (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch) => {
     dispatch(changeIsFetching(true));
-    usersAPI.getUsers(currentPage, pageSize).then((data) => {
-      dispatch(changeIsFetching(false));
-      dispatch(setUsers(data.items));
-      dispatch(setTotalCount(data.totalCount));
-    });
+    let data = await usersAPI.getUsers(currentPage, pageSize);
+    dispatch(changeIsFetching(false));
+    dispatch(setUsers(data.items));
+    dispatch(setTotalCount(data.totalCount));
   };
 };
 
 export const getNewUsersPageTC = (pageNumber: number, usersOnPage: number) => {
+  return async (dispatch: Dispatch) => {
+    dispatch(changeIsFetching(true));
+    dispatch(setCurrentPage(pageNumber));
+    let data = await usersAPI.getUsers(usersOnPage, pageNumber);
+    dispatch(setUsers(data.items));
+    dispatch(changeIsFetching(false));
+  };
+};
 
-  return (dispatch: Dispatch) => {
-      dispatch(changeIsFetching(true))
-      dispatch(setCurrentPage(pageNumber))
-      usersAPI.getUsers(usersOnPage, pageNumber)
-          .then(data => dispatch(setUsers(data.items)))
-          .finally(() => dispatch(changeIsFetching(false)))
-  }
+const followUnfollow = async (dispatch: Dispatch, userId: number, apiMethod: (userId: number) => any, actionCreator: (userId: number) => UsersMainActionType) => {
+  dispatch(changeFollowRequest(true, userId));
+  let data = await apiMethod(userId)
+    if (data.resultCode == 0) {
+      dispatch(actionCreator(userId));
+    }
+    dispatch(changeFollowRequest(false, userId));
 }
 
 export const unFollowThunkCreator = (userId: number) => {
-  return (dispatch: Dispatch) => {
-    dispatch(changeFollowRequest(true, userId));
-    usersAPI.unfollow(userId).then((data) => {
-      if (data.resultCode == 0) {
-        dispatch(unFollow(userId));
-      }
-      dispatch(changeFollowRequest(false, userId));
-    });
+  return async (dispatch: Dispatch) => {
+    const apiMethod = usersAPI.unfollow.bind(usersAPI)
+    const actionCreator = unFollow
+    followUnfollow(dispatch, userId, apiMethod, actionCreator)
+    // dispatch(changeFollowRequest(true, userId));
+    // let data = await apiMethod(userId);
+    // if (data.resultCode == 0) {
+    //   dispatch(actionCreator(userId));
+    // }
+    // dispatch(changeFollowRequest(false, userId));
   };
 };
 
 export const followThunkCreator = (userId: number) => {
-  return (dispatch: Dispatch) => {
-    dispatch(changeFollowRequest(true, userId));
-    usersAPI.follow(userId).then((data) => {
-      if (data.resultCode == 0) {
-        dispatch(follow(userId));
-      }
-      dispatch(changeFollowRequest(false, userId));
-    });
+  return async (dispatch: Dispatch) => {
+    const apiMethod = usersAPI.follow.bind(usersAPI)
+    const actionCreator = follow
+    followUnfollow(dispatch, userId, apiMethod, actionCreator)
+    // dispatch(changeFollowRequest(true, userId));
+    // let data = await apiMethod(userId)
+    //   if (data.resultCode == 0) {
+    //     dispatch(actionCreator(userId));
+    //   }
+    //   dispatch(changeFollowRequest(false, userId));
   };
 };
