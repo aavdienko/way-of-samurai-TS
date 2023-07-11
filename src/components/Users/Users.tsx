@@ -19,20 +19,25 @@ type UserPropsType = {
 };
 
 export const Users = (props: UserPropsType) => {
-
   return (
     <div>
       <Paginator
-        totalUsersCount={props.totalUsersCount}
+        totalItemsCount={props.totalUsersCount}
         pageSize={props.pageSize}
         currentPage={props.currentPage}
-        onClickHandler={props.onClickHandler}
+        onClickHandler={props.onClickHandler} 
+        portionSize={10}        
       />
       {props.users.map((user) => (
         <div key={user.id}>
-          <User user={user} followRequest={props.followRequest} followThunkCreator={props.followThunkCreator} unFollowThunkCreator={props.unFollowThunkCreator} />
-        </div>))}
-
+          <User
+            user={user}
+            followRequest={props.followRequest}
+            followThunkCreator={props.followThunkCreator}
+            unFollowThunkCreator={props.unFollowThunkCreator}
+          />
+        </div>
+      ))}
     </div>
   );
 };
