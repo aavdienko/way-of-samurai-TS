@@ -1,16 +1,14 @@
-import { BrowserRouter, Route, withRouter } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import './App.css';
 import { DialogsContainer } from './components/Dialogs/DialogsContainer';
-import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 import { UsersContainer } from './components/Users/UsersContainer';
 import { ProfileContainer } from './components/Profile/ProfileContainer';
-import { HeaderContainer, HeaderContainerClass } from './components/Header/HeaderContainer';
-import { Login, LoginContainer } from './components/Login/Login';
-import { Component, ComponentType } from 'react';
+import { HeaderContainer } from './components/Header/HeaderContainer';
+import { LoginContainer } from './components/Login/Login';
+import { ComponentType } from 'react';
 import React from 'react';
-import { connect } from 'react-redux';
-import { getAuthUserDataThunkCreator } from './redux/auth-reducer';
+import { connect } from 'react-redux'
 import { compose } from 'redux';
 import { InitialStateType, initializedAPPThunkCreator } from './redux/app-reducer';
 import { AppStateType } from './redux/redux-store';
@@ -40,7 +38,6 @@ class App extends React.Component<AppPropsType> {
       return <Preloader/>
     }
   return (
-    <BrowserRouter>
       <div className="app-wraper">
         <HeaderContainer />
         <Navbar />
@@ -74,7 +71,6 @@ class App extends React.Component<AppPropsType> {
           <Route path='/settings' render={() => <Profile posts={props.posts}/>} /> */}
         </div>
       </div>
-    </BrowserRouter>
   );
 };
 }
