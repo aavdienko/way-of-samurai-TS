@@ -6,6 +6,7 @@ import { usersReducer } from './users-reducer';
 import thunkMiddleWare, { ThunkAction } from 'redux-thunk'
 import { reducer as formReducer } from 'redux-form';
 import { AppMainActionType, appReducer } from './app-reducer';
+import { composeWithDevTools } from '@redux-devtools/extension';
 
 // соеденяем все редьюсеры в один с помощью combine reducer
 
@@ -21,7 +22,8 @@ const RootReducer = combineReducers({
 })
 
 
-export const store = createStore(RootReducer, applyMiddleware(thunkMiddleWare))
+export const store = createStore(RootReducer, composeWithDevTools(applyMiddleware(thunkMiddleWare)))
+
 
 // @ts-ignore
 window.store = store;
