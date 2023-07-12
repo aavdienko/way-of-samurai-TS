@@ -221,7 +221,7 @@ export const getNewUsersPageTC = (pageNumber: number, usersOnPage: number) => {
   return async (dispatch: Dispatch) => {
     dispatch(changeIsFetching(true));
     dispatch(setCurrentPage(pageNumber));
-    let data = await usersAPI.getUsers(usersOnPage, pageNumber);
+    let data = await usersAPI.getUsers(pageNumber, usersOnPage);
     dispatch(setUsers(data.items));
     dispatch(changeIsFetching(false));
   };
